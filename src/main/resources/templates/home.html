@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Home</title>
+</head>
+<body>
+    <header th:insert="fragments.html :: nav"></header>
+    <p th:if="${user != null}" th:text="'Hello, ' + ${user.getUsername()} + '!'" />
+</body>
+</html>

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Home</title>
+</head>
+<body>
+    <header th:insert="fragments.html :: nav"></header>
+    <p>There is no spoon...<p>
+
+    <table>
+        <thead>Users</thead>
+        <tbody>
+        <tr>
+            <td>Username</td>
+            <td>User Type</td>
+        </tr>
+        <tr th:each="userEntity: ${users}">
+            <td th:text="${userEntity.getUsername()}"></td>
+            <td th:text="${userEntity.getAuthority()}"></td>
+        </tr>
+        </tbody>
+    </table>
+</body>
+</html>

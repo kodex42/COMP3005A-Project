@@ -14,11 +14,24 @@ h1 {
     color: red;
 }
 
+.nav-container {
+    display: inline;
+}
+
 .main-nav {
     background-color: black;
     margin-bottom: 16px;
     display: flex;
     justify-content:flex-start;
+    align-items: stretch;
+}
+
+.right-nav {
+    margin-left: auto;
+    order: 2;
+    background-color: black;
+    display: flex;
+    justify-content:flex-end;
     align-items: stretch;
 }
 
@@ -30,6 +43,7 @@ h1 {
     padding: 15px 32px;
     text-align: center;
     font-size: 16pt;
+    cursor: pointer;
 }
 
 .nav-title {
@@ -82,7 +96,7 @@ th {
 }
 
 .stats-item {
-    flex: 0 0 auto;
+    flex: 1 1 auto;
 }
 
 input[type=text], input[type=password] {

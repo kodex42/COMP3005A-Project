@@ -45,25 +45,6 @@
             </div>
             <div class="stats-item">
                 <table>
-                    <thead><h2>Purchases</h2></thead>
-                    <tbody>
-                    <tr>
-                        <th>ISBN</th>
-                        <th>Date of Purchase</th>
-                        <th>Quantity</th>
-                        <th>Total Cost</th>
-                    </tr>
-                    <tr th:each="purchaseEntity: ${purchases}">
-                        <td th:text="${purchaseEntity.getId().getISBN()}"></td>
-                        <td th:text="${purchaseEntity.getId().getDate()}"></td>
-                        <td th:text="${purchaseEntity.getId().getQuantity()}"></td>
-                        <td th:text="'$' + ${purchaseEntity.getTotalCost()}"></td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div class="stats-item">
-                <table>
                     <thead><h2>Books</h2></thead>
                     <tbody>
                     <tr>
@@ -87,6 +68,69 @@
                         <td th:text="'$' + ${bookEntity.getPrice()}"></td>
                         <td th:text="${bookEntity.getPublisherPercentage()*100} + '%'"></td>
                         <td th:text="${bookEntity.getStockQuantity()}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="stats-item">
+                <table>
+                    <thead><h2>Purchases</h2></thead>
+                    <tbody>
+                    <tr>
+                        <th>ISBN</th>
+                        <th>Date of Purchase</th>
+                        <th>Quantity</th>
+                        <th>Total Cost</th>
+                    </tr>
+                    <tr th:each="purchaseEntity: ${purchases}">
+                        <td th:text="${purchaseEntity.getId().getISBN()}"></td>
+                        <td th:text="${purchaseEntity.getId().getDate()}"></td>
+                        <td th:text="${purchaseEntity.getId().getQuantity()}"></td>
+                        <td th:text="'$' + ${purchaseEntity.getTotalCost()}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="stats-item">
+                <table>
+                    <thead><h2>Orders</h2></thead>
+                    <tbody>
+                    <tr>
+                        <th>Order Number</th>
+                        <th>Ordered by</th>
+                        <th>Location</th>
+                        <th>Status</th>
+                        <th>Order Date</th>
+                        <th>Billing Address</th>
+                        <th>Shipping Address</th>
+                        <th>Total</th>
+                    </tr>
+                    <tr th:each="orderEntity: ${orders}">
+                        <td th:text="${orderEntity.getOrderNo()}"></td>
+                        <td th:text="${orderEntity.getUser().getUsername()}"></td>
+                        <td th:text="${orderEntity.getLocation()}"></td>
+                        <td th:text="${orderEntity.getStatus()}"></td>
+                        <td th:text="${orderEntity.getDate()}"></td>
+                        <td th:text="${orderEntity.getBillingAddress().getName()}"></td>
+                        <td th:text="${orderEntity.getShippingAddress().getName()}"></td>
+                        <td th:text="'$' + ${orderEntity.getTotal()}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="stats-item">
+                <table>
+                    <thead><h2>Finances</h2></thead>
+                    <tbody>
+                    <tr>
+                        <th>Income</th>
+                        <th>Expenses</th>
+                        <th>Profit</th>
+                    </tr>
+                    <tr>
+                        <td th:text="'$' + ${income}"></td>
+                        <td th:text="'$' + ${expenses}"></td>
+                        <td th:text="'$' + ${profit}"></td>
                     </tr>
                     </tbody>
                 </table>

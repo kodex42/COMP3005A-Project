@@ -14,7 +14,7 @@ public class PurchaseQueryService {
         return purchaseRepository.findAll();
     }
 
-    public double getTotalPurchases() {
+    public double getTotalExpenses() {
         return purchaseRepository.sumTotals();
     }
 }

@@ -7,18 +7,20 @@
     <link rel="icon" type="image/x-icon" href="../static/img/favicon.ico" th:href="@{/img/favicon.ico}"/>
     <title>Alphinaud's Tomes</title>
 </head>
-<div th:fragments="nav">
+<div th:fragments="nav" class="nav-container">
     <nav class="main-nav">
         <a class="nav-item nav-title nav-button" th:href="@{/}">Alphinaud's Tomes</a>
-        <form class="nav-item" sec:authorize="isAuthenticated()" method="post" th:action="@{/logout}">
-            <button class="nav-button" type="submit">Logout</button>
-        </form>
-        <form class="nav-item" sec:authorize="isAnonymous()" method="get" th:action="@{/register}">
-            <button class="nav-button" type="submit">Register</button>
-        </form>
-        <form class="nav-item" sec:authorize="isAnonymous()" method="get" th:action="@{/login}">
-            <button class="nav-button" type="submit">Login</button>
-        </form>
+        <div class="right-nav">
+            <form class="nav-item" sec:authorize="isAuthenticated()" method="post" th:action="@{/logout}">
+                <button class="nav-button" type="submit">Logout</button>
+            </form>
+            <form class="nav-item" sec:authorize="isAnonymous()" method="get" th:action="@{/register}">
+                <button class="nav-button" type="submit">Register</button>
+            </form>
+            <form class="nav-item" sec:authorize="isAnonymous()" method="get" th:action="@{/login}">
+                <button class="nav-button" type="submit">Login</button>
+            </form>
+        </div>
     </nav>
 </div>
 <body>

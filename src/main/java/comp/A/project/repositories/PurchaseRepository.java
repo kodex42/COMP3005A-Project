@@ -7,6 +7,6 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface PurchaseRepository extends CrudRepository<PurchaseEntity, PurchaseEntityCandidateKey> {
 
-    @Query(value = "SELECT SUM(total) FROM purchase", nativeQuery = true)
+    @Query(value = "SELECT COALESCE(SUM(total_cost), 0) FROM purchase", nativeQuery = true)
     double sumTotals();
 }

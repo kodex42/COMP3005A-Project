@@ -10,7 +10,7 @@ public class OrderEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(columnDefinition = "serial")
-    private long orderNo;
+    private Long orderNo;
     @ManyToOne
     @JoinColumn(name = "username", nullable = true)
     private UserEntity user;
@@ -34,11 +34,11 @@ public class OrderEntity {
     )
     private List<BookEntity> booksInOrder;
 
-    public long getOrderNo() {
+    public Long getOrderNo() {
         return orderNo;
     }
 
-    public void setOrderNo(long orderNo) {
+    public void setOrderNo(Long orderNo) {
         this.orderNo = orderNo;
     }
 

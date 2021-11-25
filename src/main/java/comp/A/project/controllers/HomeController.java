@@ -2,10 +2,7 @@ package comp.A.project.controllers;
 
 import comp.A.project.DAO.UserEntity;
 import comp.A.project.forms.UserForm;
-import comp.A.project.services.User.BookQueryService;
-import comp.A.project.services.User.PublisherQueryService;
-import comp.A.project.services.User.PurchaseQueryService;
-import comp.A.project.services.User.UserQueryService;
+import comp.A.project.services.User.*;
 import javassist.NotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,7 +11,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.security.Principal;
 
@@ -38,6 +34,8 @@ public class HomeController {
     private PublisherQueryService publisherQueryService;
     @Autowired
     private BookQueryService bookQueryService;
+    @Autowired
+    private OrderQueryService orderQueryService;
     @Autowired
     private PurchaseQueryService purchaseQueryService;
 
@@ -84,6 +82,12 @@ public class HomeController {
         model.addAttribute("publishers", publisherQueryService.getAllPublishers());
         model.addAttribute("books", bookQueryService.getAllBooks());
         model.addAttribute("purchases", purchaseQueryService.getAllPurchases());
+        model.addAttribute("orders", orderQueryService.getAllOrders());
+        double expenses = purchaseQueryService.getTotalExpenses();
+        double income = orderQueryService.getTotalIncome();
+        model.addAttribute("expenses", expenses);
+        model.addAttribute("income", income);
+        model.addAttribute("profit", income - expenses);
         return "admin";
     }
 }

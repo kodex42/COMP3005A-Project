@@ -2,6 +2,7 @@ package comp.A.project.security;
 
 import comp.A.project.services.User.UserQueryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -28,6 +29,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .antMatchers("/index").permitAll()
                     .antMatchers("/register").permitAll()
                     .antMatchers("/user/create").permitAll()
+                    .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                     .antMatchers("/admin").hasAuthority("ADMIN")
                     .anyRequest().authenticated()
                     .and()
@@ -37,7 +39,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .defaultSuccessUrl("/", true)
                     .and()
                 .logout()
-                    .permitAll();
+                    .logoutSuccessUrl("/login")
+                    .permitAll()
+                    .and()
+                .httpBasic();
     }
 
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {

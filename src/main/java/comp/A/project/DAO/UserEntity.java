@@ -5,9 +5,7 @@ import comp.A.project.security.UserType;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Collection;
 import java.util.Collections;
 
@@ -18,14 +16,19 @@ public class UserEntity implements UserDetails {
     private String username;
     private String password;
     private String userType;
-    private Integer billingAddress; // TO BE CHANGED TO DAO LATER
-    private Integer shippingAddress; // TO BE CHANGED TO DAO LATER
+    @ManyToOne
+    @JoinColumn(name = "billing_address", nullable = true)
+    private AddressEntity billingAddress;
+    @ManyToOne
+    @JoinColumn(name = "shipping_address", nullable = true)
+    private AddressEntity shippingAddress;
 
     public UserEntity() {
         super();
     }
 
     public UserEntity(UserForm userForm) {
+        super();
         this.username = userForm.getUsername();
         this.password = userForm.getPassword();
         this.userType = "USER";
@@ -74,11 +77,11 @@ public class UserEntity implements UserDetails {
         return true;
     }
 
-    public Integer getBillingAddress() {
+    public AddressEntity getBillingAddress() {
         return billingAddress;
     }
 
-    public Integer getShippingAddress() {
+    public AddressEntity getShippingAddress() {
         return shippingAddress;
     }
 }

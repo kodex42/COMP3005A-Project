@@ -1,19 +1,27 @@
-drop table if exists address_info;
-drop table if exists "user";
-drop table if exists publisher;
-drop table if exists "order";
-drop table if exists purchase;
-drop table if exists book;
-drop table if exists book_order;
+drop table if exists postal_region cascade;
+drop table if exists address cascade;
+drop table if exists "user" cascade;
+drop table if exists publisher cascade;
+drop table if exists "order" cascade;
+drop table if exists purchase cascade;
+drop table if exists book cascade;
+drop table if exists book_order cascade;
+
+create table postal_region
+	(postal_code	varchar(7),
+	 province		varchar(25),
+	 town			varchar(25),
+	 primary key (postal_code)
+	);
 
 create table address
 	(address_id		serial,
 	 "name"			varchar(25),
-	 province		varchar(25),
-	 town			varchar(25),
 	 postal_code	varchar(7),
 	 street_address varchar(50),
-	 primary key (address_id)
+	 primary key (address_id),
+	 foreign key (postal_code) references postal_region
+	 	on delete cascade
 	);
 
 create table "user"
@@ -23,9 +31,9 @@ create table "user"
 	 billing_address		int,
 	 shipping_address		int,
 	 primary key (username),
-	 foreign key (billing_address) references address_info (address_id)
+	 foreign key (billing_address) references address (address_id)
 	 	on delete set null,
-	 foreign key (shipping_address) references address_info (address_id)
+	 foreign key (shipping_address) references address (address_id)
 	 	on delete set null
 	);
 
@@ -41,20 +49,20 @@ create table "order"
 	 primary key (order_no),
 	 foreign key (username) references "user"
 	 	on delete set null,
-	 foreign key (billing_address) references address_info (address_id)
+	 foreign key (billing_address) references address (address_id)
 	 	on delete set null,
-	 foreign key (shipping_address) references address_info (address_id)
+	 foreign key (shipping_address) references address (address_id)
 	 	on delete set null
 	);
 
 create table publisher
-	(publisher_id		serial,
+	(name				varchar(25),
 	 address			int,
 	 email				varchar(50),
 	 phone				varchar(12),
 	 bank_account_no	varchar(25),
-	 primary key (publisher_id),
-	 foreign key (address) references address_info (address_id)
+	 primary key (name),
+	 foreign key (address) references address (address_id)
 	 	on delete set null
 	);
 
@@ -62,14 +70,14 @@ create table book
 	(ISBN					varchar(13),
 	 title					varchar(25),
 	 author_name			varchar(25),
-	 publisher_id			int,
+	 publisher_name			varchar(25),
 	 genre					varchar(15),
-	 pages					smallint,
-	 price					numeric(6, 2),
+	 pages					smallint check (pages >= 0),
+	 price					numeric(6, 2) check (price >= 0),
 	 publisher_percentage	numeric(3, 2) check (publisher_percentage >= 0),
-	 stock_quantity			int,
+	 stock_quantity			int check (stock_quantity >= 0),
 	 primary key (ISBN),
-	 foreign key (publisher_id) references publisher
+	 foreign key (publisher_name) references publisher (name)
 	 	on delete cascade
 	);
 
@@ -93,3 +101,6 @@ create table purchase
 	 foreign key (ISBN) references book
 	 	on delete set null
 	);
+
+insert into "user"
+values ('admin', 'admin', 'ADMIN', null, null);

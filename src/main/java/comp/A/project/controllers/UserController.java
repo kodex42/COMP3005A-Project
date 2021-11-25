@@ -2,6 +2,7 @@ package comp.A.project.controllers;
 
 import comp.A.project.DAO.UserEntity;
 import comp.A.project.forms.UserForm;
+import comp.A.project.services.User.BookQueryService;
 import comp.A.project.services.User.UserCommandService;
 import comp.A.project.services.User.UserQueryService;
 import org.slf4j.Logger;

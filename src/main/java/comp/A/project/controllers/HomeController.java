@@ -2,6 +2,7 @@ package comp.A.project.controllers;
 
 import comp.A.project.DAO.UserEntity;
 import comp.A.project.forms.UserForm;
+import comp.A.project.services.User.BookQueryService;
 import comp.A.project.services.User.UserQueryService;
 import javassist.NotFoundException;
 import org.slf4j.Logger;
@@ -31,6 +32,8 @@ public class HomeController {
 
     @Autowired
     private UserQueryService userQueryService;
+    @Autowired
+    private BookQueryService bookQueryService;
 
     @GetMapping({"/", "/index"})
     public String getHome(Model model, Principal principal) {
@@ -72,6 +75,7 @@ public class HomeController {
         log.info("Request: admin");
 
         model.addAttribute("users", userQueryService.getAllUsers());
+        model.addAttribute("books", bookQueryService.getAllBooks());
         return "admin";
     }
 }

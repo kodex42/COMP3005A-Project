@@ -3,23 +3,24 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
 <head th:fragment="head">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <link href="/css/style.css" rel="stylesheet"/>
-    <title>Book Store</title>
+    <link rel="stylesheet" type="text/css" href="../static/css/style.css" th:href="@{/css/style.css}">
+    <title>Alphinaud's Tomes</title>
 </head>
 <body>
 <div th:fragments="nav">
     <nav>
-        Book Store
-        <a sec:authorize="isAuthenticated()" th:href="@{/}">Home</a>
+        Alphinaud's Tomes
+        <br/>
         <form sec:authorize="isAuthenticated()" method="post" th:action="@{/logout}">
             <button type="submit">Logout</button>
         </form>
-        <form sec:authorize="isAnonymous()" method="get" th:action="@{/register}">
+        <form sec:authorize="isAnonymous()" method="get" th:action="@{/applications/register}">
             <button type="submit">Register</button>
         </form>
         <form sec:authorize="isAnonymous()" method="get" th:action="@{/login}">
             <button type="submit">Login</button>
         </form>
+        <a sec:authorize="isAuthenticated()" th:href="@{/}">Home</a>
     </nav>
 </div>
 </body>

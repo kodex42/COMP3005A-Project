@@ -1,22 +1,20 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title>Register</title>
-</head>
+<head th:insert="fragments.html :: head"></head>
 <body>
-<form th:action="@{/user/create}" th:method="post" th:object="${userForm}">
-    <div>
-        <label for="username">Username</label><br>
-        <input id="username" type="text" th:field="*{username}">
-        <p th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Username Error</p>
-    </div>
-    <div>
-        <label for="password">Password</label><br>
-        <input id="password" type="password" th:field="*{password}">
-        <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password Error</p>
-    </div>
-    <button type="submit">Submit</button>
-</form>
+    <header th:insert="fragments.html :: nav"></header>
+    <form th:action="@{/user/create}" th:method="post" th:object="${userForm}">
+        <div>
+            <label for="username">Username</label><br>
+            <input id="username" type="text" th:field="*{username}">
+            <p th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Username Error</p>
+        </div>
+        <div>
+            <label for="password">Password</label><br>
+            <input id="password" type="password" th:field="*{password}">
+            <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password Error</p>
+        </div>
+        <button type="submit">Submit</button>
+    </form>
 </body>
 </html>

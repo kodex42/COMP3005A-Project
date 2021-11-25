@@ -8,13 +8,41 @@
     <table>
         <thead>Users</thead>
         <tbody>
+            <tr>
+                <td>Username</td>
+                <td>User Type</td>
+            </tr>
+            <tr th:each="userEntity: ${users}">
+                <td th:text="${userEntity.getUsername()}"></td>
+                <td th:text="${userEntity.getAuthority()}"></td>
+            </tr>
+        </tbody>
+    </table>
+    <br/>
+    <table>
+        <thead>Books</thead>
+        <tbody>
         <tr>
-            <td>Username</td>
-            <td>User Type</td>
+            <td>ISBN</td>
+            <td>Title</td>
+            <td>Author</td>
+            <td>Publisher</td>
+            <td>Genre</td>
+            <td>Pages</td>
+            <td>Price</td>
+            <td>Publisher Percentage</td>
+            <td>In Stock</td>
         </tr>
-        <tr th:each="userEntity: ${users}">
-            <td th:text="${userEntity.getUsername()}"></td>
-            <td th:text="${userEntity.getAuthority()}"></td>
+        <tr th:each="bookEntity: ${books}">
+            <td th:text="${bookEntity.getISBN()}"></td>
+            <td th:text="${bookEntity.getTitle()}"></td>
+            <td th:text="${bookEntity.getAuthorName()}"></td>
+            <td th:text="${bookEntity.getPublisher().getName()}"></td>
+            <td th:text="${bookEntity.getGenre()}"></td>
+            <td th:text="${bookEntity.getPages()}"></td>
+            <td th:text="${bookEntity.getPrice()}"></td>
+            <td th:text="${bookEntity.getPublisherPercentage()}"></td>
+            <td th:text="${bookEntity.getStockQuantity()}"></td>
         </tr>
         </tbody>
     </table>

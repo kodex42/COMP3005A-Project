@@ -44,4 +44,76 @@ public class BookEntity {
         this.publisherPercentage = bookForm.getPublisherPercentage();
         this.stockQuantity = bookForm.getStockQuantity();
     }
+
+    public String getISBN() {
+        return ISBN;
+    }
+
+    public void setISBN(String ISBN) {
+        this.ISBN = ISBN;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getAuthorName() {
+        return authorName;
+    }
+
+    public void setAuthorName(String authorName) {
+        this.authorName = authorName;
+    }
+
+    public PublisherEntity getPublisher() {
+        return publisher;
+    }
+
+    public void setPublisher(PublisherEntity publisher) {
+        this.publisher = publisher;
+    }
+
+    public String getGenre() {
+        return genre;
+    }
+
+    public void setGenre(String genre) {
+        this.genre = genre;
+    }
+
+    public int getPages() {
+        return pages;
+    }
+
+    public void setPages(int pages) {
+        this.pages = pages;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public double getPublisherPercentage() {
+        return publisherPercentage;
+    }
+
+    public void setPublisherPercentage(double publisherPercentage) {
+        this.publisherPercentage = publisherPercentage;
+    }
+
+    public int getStockQuantity() {
+        return stockQuantity;
+    }
+
+    public void setStockQuantity(int stockQuantity) {
+        this.stockQuantity = stockQuantity;
+    }
 }

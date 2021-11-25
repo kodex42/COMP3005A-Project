@@ -68,8 +68,8 @@ create table publisher
 
 create table book
 	(ISBN					varchar(13),
-	 title					varchar(25),
-	 author_name			varchar(25),
+	 title					varchar(75),
+	 author_name			varchar(50),
 	 publisher_name			varchar(25),
 	 genre					varchar(15),
 	 pages					smallint check (pages >= 0),
@@ -101,6 +101,3 @@ create table purchase
 	 foreign key (ISBN) references book
 	 	on delete set null
 	);
-
-insert into "user"
-values ('admin', 'admin', 'ADMIN', null, null);

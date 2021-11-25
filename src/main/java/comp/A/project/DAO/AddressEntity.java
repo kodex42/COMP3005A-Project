@@ -1,7 +1,6 @@
 package comp.A.project.DAO;
 
 import comp.A.project.forms.AddressForm;
-import comp.A.project.forms.UserForm;
 
 import javax.persistence.*;
 
@@ -27,5 +26,46 @@ public class AddressEntity {
         this.name = addressForm.getName();
         this.postalRegion = new PostalRegionEntity(addressForm.getPostalCode(), addressForm.getProvince(), addressForm.getTown());
         this.streetAddress = addressForm.getStreetAddress();
+    }
+
+    public long getAddressId() {
+        return addressId;
+    }
+
+    public void setAddressId(long addressId) {
+        this.addressId = addressId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public PostalRegionEntity getPostalRegion() {
+        return postalRegion;
+    }
+
+    public void setPostalRegion(PostalRegionEntity postalRegion) {
+        this.postalRegion = postalRegion;
+    }
+
+    public String getStreetAddress() {
+        return streetAddress;
+    }
+
+    public void setStreetAddress(String streetAddress) {
+        this.streetAddress = streetAddress;
+    }
+
+    @Override
+    public String toString() {
+        return name + ": " +
+                postalRegion.getPostalCode() + ", " +
+                postalRegion.getProvince() + ", " +
+                postalRegion.getTown() + ", " +
+                streetAddress;
     }
 }

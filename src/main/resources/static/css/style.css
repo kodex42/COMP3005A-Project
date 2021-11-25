@@ -1,3 +1,99 @@
-nav {
+body {
+    margin: 0;
+}
+
+h1 {
+    margin-top: 0;
+}
+
+.content {
+    padding: 16px;
+}
+
+.error {
+    color: red;
+}
+
+.main-nav {
+    background-color: black;
+    padding: 0 8px;
     margin-bottom: 16px;
+    display: flex;
+    justify-content:flex-start;
+    align-items: stretch;
+}
+
+.nav-button {
+    background-color: black;
+    color: white;
+    border: none;
+    display: inline-block;
+    padding: 15px 32px;
+    text-align: center;
+    font-size: 16pt;
+}
+
+.nav-title {
+    display: inline-block;
+    padding: 15px 16px;
+    text-align: center;
+    font-size: 16pt;
+    font-family: 'Brush Script MT', cursive;
+}
+
+.nav-button:hover {
+    background-color: #5c5c5c;
+}
+
+.nav-item {
+    flex: 0 0 auto;
+}
+
+.main-nav .nav-item {
+    color: white;
+}
+
+table {
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+}
+
+td, th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+tr:nth-child(even){background-color: #f2f2f2;}
+
+tr:hover {background-color: #ddd;}
+
+th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #AA046D;
+  color: white;
+}
+
+input[type=text], input[type=password] {
+  width: 200px;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+.login-register-button {
+    background-color: black;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 200px;
+}
+
+.login-register-button:hover {
+    background-color: #5c5c5c;
 }

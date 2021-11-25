@@ -3,18 +3,20 @@
 <head th:insert="fragments.html :: head"></head>
 <body>
     <header th:insert="fragments.html :: nav"></header>
-    <form th:action="@{/user/create}" th:method="post" th:object="${userForm}">
-        <div>
-            <label for="username">Username</label><br>
-            <input id="username" type="text" th:field="*{username}">
-            <p th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Username Error</p>
-        </div>
-        <div>
-            <label for="password">Password</label><br>
-            <input id="password" type="password" th:field="*{password}">
-            <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password Error</p>
-        </div>
-        <button type="submit">Submit</button>
-    </form>
+    <div class="content">
+        <form th:action="@{/user/create}" th:method="post" th:object="${userForm}">
+            <div>
+                <label for="username">Set Username: </label>
+                <br/>
+                <input id="username" type="text" th:field="*{username}">&nbsp;<label class="error" for="username" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Username Error</label>
+            </div>
+            <div>
+                <label for="password">Set Password: </label>
+                <br/>
+                <input id="password" type="password" th:field="*{password}">
+            </div>
+            <button type="submit" class="login-register-button">Register</button>
+        </form>
+    </div>
 </body>
 </html>

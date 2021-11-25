@@ -6,22 +6,21 @@
     <link rel="stylesheet" type="text/css" href="../static/css/style.css" th:href="@{/css/style.css}">
     <title>Alphinaud's Tomes</title>
 </head>
-<body>
 <div th:fragments="nav">
-    <nav>
-        Alphinaud's Tomes
-        <br/>
-        <form sec:authorize="isAuthenticated()" method="post" th:action="@{/logout}">
-            <button type="submit">Logout</button>
+    <nav class="main-nav">
+        <div class="nav-item nav-title">Alphinaud's Tomes</div>
+        <form class="nav-item" sec:authorize="isAuthenticated()" method="post" th:action="@{/logout}">
+            <button class="nav-button" type="submit">Logout</button>
         </form>
-        <form sec:authorize="isAnonymous()" method="get" th:action="@{/applications/register}">
-            <button type="submit">Register</button>
+        <form class="nav-item" sec:authorize="isAnonymous()" method="get" th:action="@{/register}">
+            <button class="nav-button" type="submit">Register</button>
         </form>
-        <form sec:authorize="isAnonymous()" method="get" th:action="@{/login}">
-            <button type="submit">Login</button>
+        <form class="nav-item" sec:authorize="isAnonymous()" method="get" th:action="@{/login}">
+            <button class="nav-button" type="submit">Login</button>
         </form>
-        <a sec:authorize="isAuthenticated()" th:href="@{/}">Home</a>
+        <a class="nav-item nav-button" sec:authorize="isAuthenticated()" th:href="@{/}">Home</a>
     </nav>
 </div>
+<body>
 </body>
 </html>

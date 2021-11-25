@@ -30,6 +30,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .antMatchers("/register").permitAll()
                     .antMatchers("/user/create").permitAll()
                     .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
+                    .antMatchers( "/img/favicon.ico").permitAll()
                     .antMatchers("/admin").hasAuthority("ADMIN")
                     .anyRequest().authenticated()
                     .and()

@@ -6,67 +6,92 @@
     <div class="content">
         <h1>Admin Page</h1>
 
-        <table>
-            <thead><h2>Users</h2></thead>
-            <tbody>
-            <tr>
-                <th>Username</th>
-                <th>User Type</th>
-            </tr>
-            <tr th:each="userEntity: ${users}">
-                <td th:text="${userEntity.getUsername()}"></td>
-                <td th:text="${userEntity.getAuthority()}"></td>
-            </tr>
-            </tbody>
-        </table>
-        <br/>
-        <table>
-            <thead><h2>Publishers</h2></thead>
-            <tbody>
-            <tr>
-                <th>Name</th>
-                <th>Address</th>
-                <th>Email</th>
-                <th>Phone Number</th>
-                <th>Bank Account Number</th>
-            </tr>
-            <tr th:each="publisherEntity: ${publishers}">
-                <td th:text="${publisherEntity.getName()}"></td>
-                <td th:text="${publisherEntity.getAddress().toString()}"></td>
-                <td th:text="${publisherEntity.getEmail()}"></td>
-                <td th:text="${publisherEntity.getPhone()}"></td>
-                <td th:text="${publisherEntity.getBankAccountNo()}"></td>
-            </tr>
-            </tbody>
-        </table>
-        <br/>
-        <table>
-            <thead><h2>Books</h2></thead>
-            <tbody>
-            <tr>
-                <th>ISBN</th>
-                <th>Title</th>
-                <th>Author</th>
-                <th>Publisher</th>
-                <th>Genre</th>
-                <th>Pages</th>
-                <th>Price</th>
-                <th>Publisher Percentage</th>
-                <th>In Stock</th>
-            </tr>
-            <tr th:each="bookEntity: ${books}">
-                <td th:text="${bookEntity.getISBN()}"></td>
-                <td th:text="${bookEntity.getTitle()}"></td>
-                <td th:text="${bookEntity.getAuthorName()}"></td>
-                <td th:text="${bookEntity.getPublisher().getName()}"></td>
-                <td th:text="${bookEntity.getGenre()}"></td>
-                <td th:text="${bookEntity.getPages()}"></td>
-                <td th:text="'$' + ${bookEntity.getPrice()}"></td>
-                <td th:text="${bookEntity.getPublisherPercentage()*100} + '%'"></td>
-                <td th:text="${bookEntity.getStockQuantity()}"></td>
-            </tr>
-            </tbody>
-        </table>
+        <div class="stats">
+            <div class="stats-item">
+                <table>
+                    <thead><h2>Users</h2></thead>
+                    <tbody>
+                    <tr>
+                        <th>Username</th>
+                        <th>User Type</th>
+                    </tr>
+                    <tr th:each="userEntity: ${users}">
+                        <td th:text="${userEntity.getUsername()}"></td>
+                        <td th:text="${userEntity.getAuthority()}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="stats-item">
+                <table>
+                    <thead><h2>Publishers</h2></thead>
+                    <tbody>
+                    <tr>
+                        <th>Name</th>
+                        <th>Address</th>
+                        <th>Email</th>
+                        <th>Phone Number</th>
+                        <th>Bank Account Number</th>
+                    </tr>
+                    <tr th:each="publisherEntity: ${publishers}">
+                        <td th:text="${publisherEntity.getName()}"></td>
+                        <td th:text="${publisherEntity.getAddress().toString()}"></td>
+                        <td th:text="${publisherEntity.getEmail()}"></td>
+                        <td th:text="${publisherEntity.getPhone()}"></td>
+                        <td th:text="${publisherEntity.getBankAccountNo()}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="stats-item">
+                <table>
+                    <thead><h2>Purchases</h2></thead>
+                    <tbody>
+                    <tr>
+                        <th>ISBN</th>
+                        <th>Date of Purchase</th>
+                        <th>Quantity</th>
+                        <th>Total Cost</th>
+                    </tr>
+                    <tr th:each="purchaseEntity: ${purchases}">
+                        <td th:text="${purchaseEntity.getId().getISBN()}"></td>
+                        <td th:text="${purchaseEntity.getId().getDate()}"></td>
+                        <td th:text="${purchaseEntity.getId().getQuantity()}"></td>
+                        <td th:text="'$' + ${purchaseEntity.getTotalCost()}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="stats-item">
+                <table>
+                    <thead><h2>Books</h2></thead>
+                    <tbody>
+                    <tr>
+                        <th>ISBN</th>
+                        <th>Title</th>
+                        <th>Author</th>
+                        <th>Publisher</th>
+                        <th>Genre</th>
+                        <th>Pages</th>
+                        <th>Price</th>
+                        <th>Publisher Percentage</th>
+                        <th>In Stock</th>
+                    </tr>
+                    <tr th:each="bookEntity: ${books}">
+                        <td th:text="${bookEntity.getISBN()}"></td>
+                        <td th:text="${bookEntity.getTitle()}"></td>
+                        <td th:text="${bookEntity.getAuthorName()}"></td>
+                        <td th:text="${bookEntity.getPublisher().getName()}"></td>
+                        <td th:text="${bookEntity.getGenre()}"></td>
+                        <td th:text="${bookEntity.getPages()}"></td>
+                        <td th:text="'$' + ${bookEntity.getPrice()}"></td>
+                        <td th:text="${bookEntity.getPublisherPercentage()*100} + '%'"></td>
+                        <td th:text="${bookEntity.getStockQuantity()}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </body>
 </html>

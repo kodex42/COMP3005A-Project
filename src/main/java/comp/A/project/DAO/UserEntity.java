@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 @Entity
 @Table(name = "user", schema = "public")
@@ -22,6 +23,9 @@ public class UserEntity implements UserDetails {
     @ManyToOne
     @JoinColumn(name = "shipping_address", nullable = true)
     private AddressEntity shippingAddress;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    List<OrderEntity> orders;
 
     public UserEntity() {
         super();

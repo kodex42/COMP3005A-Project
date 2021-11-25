@@ -1,12 +1,12 @@
 package comp.A.project.DAO;
 
 import comp.A.project.forms.BookForm;
-import comp.A.project.forms.UserForm;
 import comp.A.project.services.User.PublisherQueryService;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "book", schema = "public")
@@ -27,6 +27,9 @@ public class BookEntity {
     private double price;
     private double publisherPercentage;
     private int stockQuantity;
+
+    @ManyToMany(mappedBy = "booksInOrder")
+    private List<OrderEntity> ordersWithBook;
 
     public BookEntity() {
         super();

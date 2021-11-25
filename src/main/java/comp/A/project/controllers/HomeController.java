@@ -4,6 +4,7 @@ import comp.A.project.DAO.UserEntity;
 import comp.A.project.forms.UserForm;
 import comp.A.project.services.User.BookQueryService;
 import comp.A.project.services.User.PublisherQueryService;
+import comp.A.project.services.User.PurchaseQueryService;
 import comp.A.project.services.User.UserQueryService;
 import javassist.NotFoundException;
 import org.slf4j.Logger;
@@ -37,6 +38,8 @@ public class HomeController {
     private PublisherQueryService publisherQueryService;
     @Autowired
     private BookQueryService bookQueryService;
+    @Autowired
+    private PurchaseQueryService purchaseQueryService;
 
     @GetMapping({"/", "/index"})
     public String getHome(Model model, Principal principal) {
@@ -80,6 +83,7 @@ public class HomeController {
         model.addAttribute("users", userQueryService.getAllUsers());
         model.addAttribute("publishers", publisherQueryService.getAllPublishers());
         model.addAttribute("books", bookQueryService.getAllBooks());
+        model.addAttribute("purchases", purchaseQueryService.getAllPurchases());
         return "admin";
     }
 }

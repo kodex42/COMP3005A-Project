@@ -8,7 +8,7 @@
 </head>
 <div th:fragments="nav">
     <nav class="main-nav">
-        <div class="nav-item nav-title">Alphinaud's Tomes</div>
+        <a class="nav-item nav-title nav-button" th:href="@{/}">Alphinaud's Tomes</a>
         <form class="nav-item" sec:authorize="isAuthenticated()" method="post" th:action="@{/logout}">
             <button class="nav-button" type="submit">Logout</button>
         </form>
@@ -18,7 +18,6 @@
         <form class="nav-item" sec:authorize="isAnonymous()" method="get" th:action="@{/login}">
             <button class="nav-button" type="submit">Login</button>
         </form>
-        <a class="nav-item nav-button" sec:authorize="isAuthenticated()" th:href="@{/}">Home</a>
     </nav>
 </div>
 <body>

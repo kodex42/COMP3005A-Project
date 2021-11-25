@@ -16,7 +16,6 @@ h1 {
 
 .main-nav {
     background-color: black;
-    padding: 0 8px;
     margin-bottom: 16px;
     display: flex;
     justify-content:flex-start;
@@ -35,9 +34,9 @@ h1 {
 
 .nav-title {
     display: inline-block;
-    padding: 15px 16px;
+    padding: 10px 16px;
     text-align: center;
-    font-size: 16pt;
+    font-size: 20pt;
     font-family: 'Brush Script MT', cursive;
 }
 
@@ -73,6 +72,17 @@ th {
   text-align: left;
   background-color: #AA046D;
   color: white;
+}
+
+.stats {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
+    gap: 10px;
+}
+
+.stats-item {
+    flex: 0 0 auto;
 }
 
 input[type=text], input[type=password] {

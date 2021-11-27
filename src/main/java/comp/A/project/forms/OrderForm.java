@@ -1,12 +1,15 @@
 package comp.A.project.forms;
 
+import comp.A.project.DAO.BookEntity;
 import comp.A.project.DAO.UserEntity;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.util.Map;
 
 public class OrderForm {
     @NotNull(message = "User cannot be null")
@@ -22,6 +25,7 @@ public class OrderForm {
     @NotNull(message = "Total price cannot be null")
     @Min(value = 0, message = "Total price cannot be negative")
     private Double total;
+    private Map<BookEntity, Integer> booksInOrder;
 
     public UserEntity getUser() {
         return user;
@@ -59,7 +63,7 @@ public class OrderForm {
         this.shippingAddress = shippingAddress;
     }
 
-    public double getTotal() {
+    public Double getTotal() {
         return total;
     }
 
@@ -67,7 +71,7 @@ public class OrderForm {
         this.total = total;
     }
 
-    public boolean isSaveBilling() {
+    public Boolean getSaveBilling() {
         return saveBilling;
     }
 
@@ -75,11 +79,19 @@ public class OrderForm {
         this.saveBilling = saveBilling;
     }
 
-    public boolean isSaveShipping() {
+    public Boolean getSaveShipping() {
         return saveShipping;
     }
 
     public void setSaveShipping(boolean saveShipping) {
         this.saveShipping = saveShipping;
+    }
+
+    public Map<BookEntity, Integer> getBooksInOrder() {
+        return booksInOrder;
+    }
+
+    public void setBooksInOrder(Map<BookEntity, Integer> booksInOrder) {
+        this.booksInOrder = booksInOrder;
     }
 }

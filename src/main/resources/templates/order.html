@@ -5,28 +5,28 @@
 <body>
 <header th:insert="fragments.html :: nav"></header>
 <div class="content">
-    <div th:if="${cart != null and !cart.empty}" class="order-review">
-        <p class="error" th:if="${#fields.hasErrors('orderForm')}" th:errors="*{order}">Order Error</p>
+    <div class="order-review">
         <div class="stats order centered">
-            <form class="stats" th:action="@{/order}" th:method="post" th:object="${orderForm}">
-                <input type="hidden" th:field="*{user}" th:value="${user}"/>
+            <form class="stats" th:action="@{/order/create}" th:method="post" th:object="${orderForm}">
+                <input type="hidden" th:field="*{user}" />
+                <input type="hidden" th:field="*{total}" />
                 <div class="stats-item label-input-inline">
                     <h2>Billing Address</h2>
-                    <label for="b_address_name">Address Name: </label><span><input id="b_address_name" type="text" th:field="*{billingAddress.name}" th:text="${user?.billingAddress?.name}"/></span><br/>
-                    <label for="b_address_postal_code">Postal Code: </label><span><input id="b_address_postal_code" type="text" th:field="*{billingAddress.postalCode}" th:text="${user?.billingAddress?.postalRegion?.postalCode}"/></span><br/>
-                    <label for="b_address_province">Province: </label><span><input id="b_address_province" type="text" th:field="*{billingAddress.province}" th:text="${user?.billingAddress?.postalRegion?.province}"/></span><br/>
-                    <label for="b_address_town">City/Town: </label><span><input id="b_address_town" type="text" th:field="*{billingAddress.town}" th:text="${user?.billingAddress?.postalRegion?.town}"/></span><br/>
-                    <label for="b_address_street">Street Address: </label><span><input id="b_address_street" type="text" th:field="*{billingAddress.streetAddress}" th:text="${user?.billingAddress?.streetAddress}"/></span><br/>
-                    <label for="b_address_save">Save this Billing Address? </label><span><input id="b_address_save" type="checkbox" th:field="*{saveBilling}" th:value="${user?.billingAddress != null}"/></span><br/>
+                    <label for="b_address_postal_code">Postal Code: </label><span><input id="b_address_postal_code" type="text" th:field="*{billingAddress.postalCode}" th:value="${orderForm.billingAddress.postalCode}"/></span><br/>
+                    <label for="b_address_province">Province: </label><span><input id="b_address_province" type="text" th:field="*{billingAddress.province}" th:value="${orderForm.billingAddress.province}"/></span><br/>
+                    <label for="b_address_town">City/Town: </label><span><input id="b_address_town" type="text" th:field="*{billingAddress.town}" th:value="${orderForm.billingAddress.town}"/></span><br/>
+                    <label for="b_address_street">Street Address: </label><span><input id="b_address_street" type="text" th:field="*{billingAddress.streetAddress}" th:value="${orderForm.billingAddress.streetAddress}"/></span><br/>
+                    <label for="b_address_name">Address Name (optional): </label><span><input id="b_address_name" type="text" th:field="*{billingAddress.name}" th:value="${orderForm.billingAddress.name}"/></span><br/>
+                    <label for="b_address_save">Save this Billing Address? </label><span><input id="b_address_save" type="checkbox" th:field="*{saveBilling}"/></span><br/>
                 </div>
                 <div class="stats-item label-input-inline">
                     <h2>Shipping Address</h2>
-                    <label for="s_address_name">Address Name: </label><span><input id="s_address_name" type="text" th:field="*{shippingAddress.name}" th:text="${user?.shippingAddress?.name}"/></span><br/>
-                    <label for="s_address_postal_code">Postal Code: </label><span><input id="s_address_postal_code" type="text" th:field="*{shippingAddress.postalCode}" th:text="${user?.shippingAddress?.postalRegion?.postalCode}"/></span><br/>
-                    <label for="s_address_province">Province: </label><span><input id="s_address_province" type="text" th:field="*{shippingAddress.province}" th:text="${user?.shippingAddress?.postalRegion?.province}"/></span><br/>
-                    <label for="s_address_town">City/Town: </label><span><input id="s_address_town" type="text" th:field="*{shippingAddress.town}" th:text="${user?.shippingAddress?.postalRegion?.town}"/></span><br/>
-                    <label for="s_address_street">Street Address: </label><span><input id="s_address_street" type="text" th:field="*{shippingAddress.streetAddress}" th:text="${user?.shippingAddress?.streetAddress}"/></span><br/>
-                    <label for="s_address_save">Save this Shipping Address? </label><span><input id="s_address_save" type="checkbox" th:field="*{saveShipping}" th:value="${user?.shippingAddress != null}"/></span><br/>
+                    <label for="s_address_postal_code">Postal Code: </label><span><input id="s_address_postal_code" type="text" th:field="*{shippingAddress.postalCode}" th:value="${orderForm.shippingAddress.postalCode}"/></span><br/>
+                    <label for="s_address_province">Province: </label><span><input id="s_address_province" type="text" th:field="*{shippingAddress.province}" th:value="${orderForm.shippingAddress.province}"/></span><br/>
+                    <label for="s_address_town">City/Town: </label><span><input id="s_address_town" type="text" th:field="*{shippingAddress.town}" th:value="${orderForm.shippingAddress.town}"/></span><br/>
+                    <label for="s_address_street">Street Address: </label><span><input id="s_address_street" type="text" th:field="*{shippingAddress.streetAddress}" th:value="${orderForm.shippingAddress.streetAddress}"/></span><br/>
+                    <label for="s_address_name">Address Name (optional): </label><span><input id="s_address_name" type="text" th:field="*{shippingAddress.name}" th:value="${orderForm.shippingAddress.name}"/></span><br/>
+                    <label for="s_address_save">Save this Shipping Address? </label><span><input id="s_address_save" type="checkbox" th:field="*{saveShipping}"/></span><br/>
                 </div>
                 <div class="stats-item">
                     <table>
@@ -37,18 +37,19 @@
                             <th>Price</th>
                             <th>Qty</th>
                         </tr>
-                        <tr th:each="bookEntity: ${cart.keySet()}">
+                        <tr th:each="bookEntity: ${orderForm.getBooksInOrder().keySet()}">
                             <td th:text="${bookEntity.getTitle()}"></td>
                             <td th:text="'$' + ${bookEntity.getPrice()}"></td>
-                            <td th:text="${cart.get(bookEntity)}"></td>
+                            <td th:text="${orderForm.getBooksInOrder().get(bookEntity)}"></td>
                         </tr>
                         </tbody>
                     </table>
                 </div>
                 <div class="stats-item">
-                    <h2><strong th:text="'Total: $' + ${total}" ></strong></h2>
+                    <h2><strong th:text="'Total: $' + ${#numbers.formatDecimal(orderForm.getTotal(), 0, 2)}" ></strong></h2>
                     <button type="submit" class="cart-button">Place Order</button>
                 </div>
+                <p class="stats-item error" th:if="${#fields.hasGlobalErrors()}" th:errors="*{global}">Global Error</p>
             </form>
         </div>
     </div>

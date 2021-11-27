@@ -1,10 +1,13 @@
 package comp.A.project.DAO;
 
 import comp.A.project.forms.OrderForm;
+import comp.A.project.services.query.AddressQueryService;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Entity
 @Table(name = "order", schema = "public")
@@ -14,27 +17,22 @@ public class OrderEntity {
     @Column(columnDefinition = "serial")
     private Long orderNo;
     @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "username", nullable = true)
+    @JoinColumn(name = "username")
     private UserEntity user;
     private String location;
     private String status;
     private Timestamp date;
     @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "billing_address", nullable = true)
+    @JoinColumn(name = "billing_address")
     private AddressEntity billingAddress;
     @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "shipping_address", nullable = true)
+    @JoinColumn(name = "shipping_address")
     private AddressEntity shippingAddress;
     @Column(name = "total", precision = 10, scale = 2)
     private double total;
 
-    @ManyToMany
-    @JoinTable(
-            name = "book_order",
-            joinColumns = @JoinColumn(name = "order_no"),
-            inverseJoinColumns = @JoinColumn(name = "ISBN")
-    )
-    private List<BookEntity> booksInOrder;
+    @OneToMany(mappedBy = "order", cascade = CascadeType.REMOVE)
+    private List<BookOrderEntity> booksInOrder;
 
     public OrderEntity() {
         super();
@@ -46,14 +44,15 @@ public class OrderEntity {
         this.location = orderForm.getLocation();
         this.status = orderForm.getStatus();
         this.date = orderForm.getDate();
-        this.billingAddress = new AddressEntity(orderForm.getBillingAddress());
-        this.shippingAddress = new AddressEntity(orderForm.getShippingAddress());
+        this.billingAddress = null;
+        this.shippingAddress = null;
         this.total = orderForm.getTotal();
-
-        if (orderForm.isSaveBilling())
-            this.user.setBillingAddress(this.billingAddress);
-        if (orderForm.isSaveShipping())
-            this.user.setShippingAddress(this.shippingAddress);
+        this.booksInOrder = new ArrayList<>();
+        Map<BookEntity, Integer> booksInOrder = orderForm.getBooksInOrder();
+        for (BookEntity b : booksInOrder.keySet()) {
+            BookOrderEntity boe = new BookOrderEntity(this.orderNo, b, booksInOrder.get(b));
+            this.booksInOrder.add(boe);
+        }
     }
 
     public Long getOrderNo() {
@@ -120,11 +119,11 @@ public class OrderEntity {
         this.total = total;
     }
 
-    public List<BookEntity> getBooksInOrder() {
+    public List<BookOrderEntity> getBooksInOrder() {
         return booksInOrder;
     }
 
-    public void setBooksInOrder(List<BookEntity> booksInOrder) {
+    public void setBooksInOrder(List<BookOrderEntity> booksInOrder) {
         this.booksInOrder = booksInOrder;
     }
 }

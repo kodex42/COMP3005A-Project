@@ -25,6 +25,10 @@ public class UserCommandService {
         return userRepository.save(new UserEntity(userForm));
     }
 
+    public UserEntity saveUser(UserEntity user) {
+        return userRepository.save(user);
+    }
+
     public void removeUserByUsername(String username) {
         try {
             userRepository.delete(userQueryService.getByUsername(username));

@@ -1,8 +1,12 @@
 package comp.A.project.controllers;
 
+import comp.A.project.DAO.AddressEntity;
 import comp.A.project.DAO.BookEntity;
 import comp.A.project.DAO.UserEntity;
+import comp.A.project.forms.AddressForm;
 import comp.A.project.forms.UserForm;
+import comp.A.project.services.command.AddressCommandService;
+import comp.A.project.services.query.AddressQueryService;
 import comp.A.project.services.query.BookQueryService;
 import comp.A.project.services.command.UserCommandService;
 import comp.A.project.services.query.UserQueryService;
@@ -19,13 +23,15 @@ import javax.persistence.EntityExistsException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.security.Principal;
-import java.util.Map;
 
 /*  UserController
 
     Handles the following routes:
+        GET
+            /user/profile
         POST
             /user/create
+            /user/add_address
             /user/cart
             /user/confirm_cart
 */
@@ -44,6 +50,30 @@ public class UserController {
     private UserCommandService userCommandService;
     @Autowired
     private BookQueryService bookQueryService;
+    @Autowired
+    private AddressQueryService addressQueryService;
+    @Autowired
+    private AddressCommandService addressCommandService;
+
+    @GetMapping("/profile")
+    public String viewProfile(Model model, Principal principal) {
+        log.info("Request: view user profile");
+
+        // Is user authenticated?
+        if (principal != null) {
+            try {
+                UserEntity user = userQueryService.getByUsername(principal.getName());
+                model.addAttribute("user", user);
+                model.addAttribute("orders", user.getOrders());
+                model.addAttribute("billingAddressForm", new AddressForm(user.getBillingAddress()));
+                model.addAttribute("shippingAddressForm", new AddressForm(user.getShippingAddress()));
+            } catch (NotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return "user_profile";
+    }
 
     @PostMapping("/create")
     public String createUser(@Valid UserForm userForm, BindingResult bindingResult) {
@@ -61,6 +91,30 @@ public class UserController {
         }
 
         return "register";
+    }
+
+    @PostMapping("/add_address")
+    public String addUserSavedAddress(@RequestParam(value = "type") String addressType, @Valid AddressForm addressForm, Model model, Principal principal) {
+        log.info("Request: save address " + addressForm.getName() + " as current user's saved " + addressType + " address");
+
+        UserEntity user = null;
+        // Is user authenticated?
+        if (principal != null) {
+            try {
+                user = userQueryService.getByUsername(principal.getName());
+            } catch (NotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+        if (user != null) {
+            if (addressType.equals("billing"))
+                user.setBillingAddress(addressCommandService.create(addressForm));
+            else if (addressType.equals("shipping"))
+                user.setShippingAddress(addressCommandService.create(addressForm));
+            userCommandService.saveUser(user);
+        }
+
+        return "redirect:/user/profile";
     }
 
     @PostMapping("/cart")
@@ -100,19 +154,9 @@ public class UserController {
     }
 
     @PostMapping("/confirm_cart")
-    public String confirmCart(Model model, Principal principal) throws NotFoundException {
+    public String confirmCart() {
         log.info("Request: cart has been confirmed");
 
-        UserEntity user = userQueryService.getByUsername(principal.getName());
-        Map<BookEntity, Integer> cart = homeController.getShoppingCart(user);
-
-        double total = 0;
-        for (BookEntity b : cart.keySet())
-            total += b.getPrice() * cart.get(b);
-
-        model.addAttribute("cart", cart);
-        model.addAttribute("total", total);
-        model.addAttribute("user", user);
-        return orderController.getOrder(model);
+        return "redirect:/order";
     }
 }

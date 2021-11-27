@@ -15,10 +15,10 @@ public class UserEntity implements UserDetails {
     private String username;
     private String password;
     private String userType;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "billing_address", nullable = true)
     private AddressEntity billingAddress;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "shipping_address", nullable = true)
     private AddressEntity shippingAddress;
 

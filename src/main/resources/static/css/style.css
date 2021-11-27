@@ -99,6 +99,11 @@ th {
     gap: 10px;
 }
 
+.stats .error {
+    position: absolute;
+    top: 50px;
+}
+
 .order .stats-item {
     flex-basis: 30%;
 }
@@ -118,6 +123,10 @@ th {
 
 .stats-item {
     flex: 1 1 auto;
+}
+
+.stats-item-low-flex {
+    flex: 0;
 }
 
 input[type=text], input[type=password] {

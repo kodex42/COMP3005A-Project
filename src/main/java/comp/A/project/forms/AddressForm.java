@@ -1,5 +1,7 @@
 package comp.A.project.forms;
 
+import comp.A.project.DAO.AddressEntity;
+
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 
@@ -14,6 +16,22 @@ public class AddressForm {
     private String town;
     @NotEmpty(message = "Street address is required")
     private String streetAddress;
+
+    public AddressForm() {
+        super();
+    }
+
+    public AddressForm(AddressEntity addressEntity) {
+        super();
+        if (addressEntity == null)
+            return;
+
+        this.name = addressEntity.getName();
+        this.postalCode = addressEntity.getPostalRegion().getPostalCode();
+        this.province = addressEntity.getPostalRegion().getProvince();
+        this.town = addressEntity.getPostalRegion().getTown();
+        this.streetAddress = addressEntity.getStreetAddress();
+    }
 
     public String getName() {
         return name;

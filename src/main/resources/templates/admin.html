@@ -111,8 +111,8 @@
                         <td th:text="${orderEntity.getLocation()}"></td>
                         <td th:text="${orderEntity.getStatus()}"></td>
                         <td th:text="${orderEntity.getDate()}"></td>
-                        <td th:text="${orderEntity.getBillingAddress().getName()}"></td>
-                        <td th:text="${orderEntity.getShippingAddress().getName()}"></td>
+                        <td th:text="${orderEntity.getBillingAddress().toString()}"></td>
+                        <td th:text="${orderEntity.getShippingAddress().toString()}"></td>
                         <td th:text="'$' + ${orderEntity.getTotal()}"></td>
                     </tr>
                     </tbody>

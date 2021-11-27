@@ -1,6 +1,9 @@
 package comp.A.project.DAO;
 
 import comp.A.project.forms.AddressForm;
+import comp.A.project.services.query.AddressQueryService;
+import javassist.NotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
 

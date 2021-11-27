@@ -28,8 +28,8 @@ public class BookEntity implements Comparable {
     private double publisherPercentage;
     private int stockQuantity;
 
-    @ManyToMany(mappedBy = "booksInOrder")
-    private List<OrderEntity> ordersWithBook;
+    @OneToMany(mappedBy = "book")
+    private List<BookOrderEntity> ordersWithBook;
 
     public BookEntity() {
         super();
@@ -118,6 +118,10 @@ public class BookEntity implements Comparable {
 
     public void setStockQuantity(int stockQuantity) {
         this.stockQuantity = stockQuantity;
+    }
+
+    public void addStockQuantity(int add) {
+        this.stockQuantity += add;
     }
 
     @Override

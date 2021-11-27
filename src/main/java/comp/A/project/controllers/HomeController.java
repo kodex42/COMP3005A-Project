@@ -129,4 +129,8 @@ public class HomeController {
     public Map<BookEntity, Integer> getShoppingCart(UserEntity user) {
         return this.shoppingCarts.get(user.getUsername());
     }
+
+    public void resetShoppingCart(UserEntity user) {
+        this.shoppingCarts.put(user.getUsername(), new HashMap<>());
+    }
 }

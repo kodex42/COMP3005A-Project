@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:insert="fragments.html :: head"></head>
+<body>
+<header th:insert="fragments.html :: nav"></header>
+<div class="content">
+    <h1 th:text="${user.getUsername()} + '\'s Profile'"></h1>
+    <div>
+        <table>
+            <thead><h2>Orders</h2></thead>
+            <tbody>
+            <tr>
+                <th>Order Number</th>
+                <th>Ordered by</th>
+                <th>Location</th>
+                <th>Status</th>
+                <th>Order Date</th>
+                <th>Billing Address</th>
+                <th>Shipping Address</th>
+                <th>Total</th>
+            </tr>
+            <tr th:each="orderEntity: ${orders}">
+                <td th:text="${orderEntity.getOrderNo()}"></td>
+                <td th:text="${orderEntity.getUser().getUsername()}"></td>
+                <td th:text="${orderEntity.getLocation()}"></td>
+                <td th:text="${orderEntity.getStatus()}"></td>
+                <td th:text="${orderEntity.getDate()}"></td>
+                <td th:text="${orderEntity.getBillingAddress()?.toString()}"></td>
+                <td th:text="${orderEntity.getShippingAddress()?.toString()}"></td>
+                <td th:text="'$' + ${orderEntity.getTotal()}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="stats">
+        <div class="stats-item-low-flex">
+            <form class="label-input-inline" th:object="${billingAddressForm}" th:action="@{/user/add_address(type='billing')}" th:method="post">
+                <h2 th:if="user?.billingAddress != null">Saved Billing Address</h2>
+                <h2 th:if="user?.billingAddress == null">You Have No Saved Billing Address</h2>
+                <label for="b_address_postal_code">Postal Code: </label><span><input id="b_address_postal_code" type="text" th:field="*{postalCode}" th:value="${billingAddressForm.postalCode}"/></span><br/>
+                <label for="b_address_province">Province: </label><span><input id="b_address_province" type="text" th:field="*{province}" th:value="${billingAddressForm.province}"/></span><br/>
+                <label for="b_address_town">City/Town: </label><span><input id="b_address_town" type="text" th:field="*{town}" th:value="${billingAddressForm.town}"/></span><br/>
+                <label for="b_address_street">Street Address: </label><span><input id="b_address_street" type="text" th:field="*{streetAddress}" th:value="${billingAddressForm.streetAddress}"/></span><br/>
+                <label for="b_address_name">Address Name (Optional): </label><span><input id="b_address_name" type="text" th:field="*{name}" th:value="${billingAddressForm.name}"/></span><br/>
+                <button type="submit">Update</button>
+            </form>
+        </div>
+        <div class="stats-item-low-flex">
+            <form class="label-input-inline" th:object="${shippingAddressForm}" th:action="@{/user/add_address(type='shipping')}" th:method="post">
+                <h2 th:if="user?.shippingAddress != null">Saved Shipping Address</h2>
+                <h2 th:if="user?.shippingAddress == null">You Have No Saved Shipping Address</h2>
+                <label for="s_address_postal_code">Postal Code: </label><span><input id="s_address_postal_code" type="text" th:field="*{postalCode}" th:value="${shippingAddressForm.postalCode}"/></span><br/>
+                <label for="s_address_province">Province: </label><span><input id="s_address_province" type="text" th:field="*{province}" th:value="${shippingAddressForm.province}"/></span><br/>
+                <label for="s_address_town">City/Town: </label><span><input id="s_address_town" type="text" th:field="*{town}" th:value="${shippingAddressForm.town}"/></span><br/>
+                <label for="s_address_street">Street Address: </label><span><input id="s_address_street" type="text" th:field="*{streetAddress}" th:value="${shippingAddressForm.streetAddress}"/></span><br/>
+                <label for="s_address_name">Address Name (Optional): </label><span><input id="s_address_name" type="text" th:field="*{name}" th:value="${shippingAddressForm.name}"/></span><br/>
+                <button type="submit">Update</button>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

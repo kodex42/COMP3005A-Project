@@ -1,7 +1,7 @@
 package comp.A.project.DAO;
 
 import comp.A.project.forms.BookForm;
-import comp.A.project.services.User.PublisherQueryService;
+import comp.A.project.services.query.PublisherQueryService;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -10,7 +10,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "book", schema = "public")
-public class BookEntity {
+public class BookEntity implements Comparable {
     @Transient
     @Autowired
     private PublisherQueryService publisherQueryService;
@@ -118,5 +118,24 @@ public class BookEntity {
 
     public void setStockQuantity(int stockQuantity) {
         this.stockQuantity = stockQuantity;
+    }
+
+    @Override
+    public int hashCode() {
+        return this.ISBN.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (getClass() != obj.getClass())
+            return false;
+        return Integer.valueOf(this.ISBN.hashCode()).equals(((BookEntity) obj).ISBN.hashCode());
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        if (getClass() != o.getClass())
+            return 0;
+        return this.title.compareTo(((BookEntity) o).title);
     }
 }

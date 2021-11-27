@@ -1,4 +1,4 @@
-package comp.A.project.services.User;
+package comp.A.project.services.query;
 
 import comp.A.project.DAO.PublisherEntity;
 import comp.A.project.repositories.PublisherRepository;

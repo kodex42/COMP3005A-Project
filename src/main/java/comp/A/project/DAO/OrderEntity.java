@@ -1,5 +1,7 @@
 package comp.A.project.DAO;
 
+import comp.A.project.forms.OrderForm;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.List;
@@ -11,16 +13,16 @@ public class OrderEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(columnDefinition = "serial")
     private Long orderNo;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "username", nullable = true)
     private UserEntity user;
     private String location;
     private String status;
     private Timestamp date;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "billing_address", nullable = true)
     private AddressEntity billingAddress;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "shipping_address", nullable = true)
     private AddressEntity shippingAddress;
     @Column(name = "total", precision = 10, scale = 2)
@@ -33,6 +35,26 @@ public class OrderEntity {
             inverseJoinColumns = @JoinColumn(name = "ISBN")
     )
     private List<BookEntity> booksInOrder;
+
+    public OrderEntity() {
+        super();
+    }
+
+    public OrderEntity(OrderForm orderForm) {
+        super();
+        this.user = orderForm.getUser();
+        this.location = orderForm.getLocation();
+        this.status = orderForm.getStatus();
+        this.date = orderForm.getDate();
+        this.billingAddress = new AddressEntity(orderForm.getBillingAddress());
+        this.shippingAddress = new AddressEntity(orderForm.getShippingAddress());
+        this.total = orderForm.getTotal();
+
+        if (orderForm.isSaveBilling())
+            this.user.setBillingAddress(this.billingAddress);
+        if (orderForm.isSaveShipping())
+            this.user.setShippingAddress(this.shippingAddress);
+    }
 
     public Long getOrderNo() {
         return orderNo;

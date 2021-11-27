@@ -1,4 +1,4 @@
-package comp.A.project.services.User;
+package comp.A.project.services.query;
 
 import comp.A.project.DAO.OrderEntity;
 import comp.A.project.repositories.OrderRepository;

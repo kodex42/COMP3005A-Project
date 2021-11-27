@@ -1,6 +1,6 @@
 package comp.A.project.security;
 
-import comp.A.project.services.User.UserQueryService;
+import comp.A.project.services.query.UserQueryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Configuration;
@@ -30,7 +30,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .antMatchers("/register").permitAll()
                     .antMatchers("/user/create").permitAll()
                     .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
-                    .antMatchers( "/img/favicon.ico").permitAll()
+                    .antMatchers( "/img/*").permitAll()
                     .antMatchers("/admin").hasAuthority("ADMIN")
                     .anyRequest().authenticated()
                     .and()

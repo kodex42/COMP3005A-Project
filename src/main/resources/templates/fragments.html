@@ -11,6 +11,9 @@
     <nav class="main-nav">
         <a class="nav-item nav-title nav-button" th:href="@{/}">Alphinaud's Tomes</a>
         <div class="right-nav">
+            <form th:if="${cart != null and !cart.empty}" class="nav-item" sec:authorize="isAuthenticated()" method="post" th:action="@{/user/confirm_cart}">
+                <button class="nav-button" type="submit" th:text="'Cart (' + ${#lists.size(cart.keySet())} + ')'"><img src="../static/img/carticon.ico" th:src="@{/img/carticon.ico}" width="20px" height="20px" /></button>
+            </form>
             <form class="nav-item" sec:authorize="isAuthenticated()" method="post" th:action="@{/logout}">
                 <button class="nav-button" type="submit">Logout</button>
             </form>

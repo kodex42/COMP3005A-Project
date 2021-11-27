@@ -1,8 +1,9 @@
-package comp.A.project.services.User;
+package comp.A.project.services.command;
 
 import comp.A.project.DAO.UserEntity;
 import comp.A.project.forms.UserForm;
 import comp.A.project.repositories.UserRepository;
+import comp.A.project.services.query.UserQueryService;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,7 +29,7 @@ public class UserCommandService {
         try {
             userRepository.delete(userQueryService.getByUsername(username));
         } catch (IllegalArgumentException | NotFoundException e) {
-            System.out.println("Tried to delete non-existant user " + username);
+            System.out.println("Tried to delete non-existent user " + username);
         }
     }
 }

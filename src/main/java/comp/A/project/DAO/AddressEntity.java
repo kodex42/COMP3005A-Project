@@ -12,7 +12,7 @@ public class AddressEntity {
     @Column(columnDefinition = "serial")
     private long addressId;
     private String name;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "postal_code", nullable = false)
     private PostalRegionEntity postalRegion;
     private String streetAddress;

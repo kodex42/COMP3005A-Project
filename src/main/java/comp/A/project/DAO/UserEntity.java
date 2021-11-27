@@ -6,9 +6,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 @Entity
 @Table(name = "user", schema = "public")
@@ -25,7 +23,7 @@ public class UserEntity implements UserDetails {
     private AddressEntity shippingAddress;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
-    List<OrderEntity> orders;
+    private List<OrderEntity> orders;
 
     public UserEntity() {
         super();
@@ -87,5 +85,17 @@ public class UserEntity implements UserDetails {
 
     public AddressEntity getShippingAddress() {
         return shippingAddress;
+    }
+
+    public void setBillingAddress(AddressEntity billingAddress) {
+        this.billingAddress = billingAddress;
+    }
+
+    public void setShippingAddress(AddressEntity shippingAddress) {
+        this.shippingAddress = shippingAddress;
+    }
+
+    public List<OrderEntity> getOrders() {
+        return orders;
     }
 }

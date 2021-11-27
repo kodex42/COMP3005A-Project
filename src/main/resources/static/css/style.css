@@ -76,6 +76,10 @@ td, th {
   padding: 8px;
 }
 
+.td-no-pad {
+    padding: 0;
+}
+
 tr:nth-child(even){background-color: #f2f2f2;}
 
 tr:hover {background-color: #ddd;}
@@ -93,6 +97,23 @@ th {
     flex-wrap: wrap;
     align-items: stretch;
     gap: 10px;
+}
+
+.order .stats-item {
+    flex-basis: 30%;
+}
+
+.centered {
+    margin: auto;
+    width: max-content;
+}
+
+.right-stats {
+    margin-left: auto;
+    order: 2;
+    display: flex;
+    justify-content:flex-end;
+    align-items: stretch;
 }
 
 .stats-item {
@@ -120,4 +141,33 @@ input[type=text], input[type=password] {
 
 .login-register-button:hover {
     background-color: #5c5c5c;
+}
+
+.cart-button {
+    background-color: #AA046D;
+    color: white;
+    border: none;
+    padding: 5px 5px;
+    display: inline-block;
+    text-align: center;
+    font-size: 16pt;
+    cursor: pointer;
+    min-width: 50px;
+}
+
+.cart-button:hover {
+    background-color: #8c5478;
+}
+
+label-input-inline label {
+    float: left;
+}
+
+.label-input-inline span {
+    display: block;
+    overflow: hidden;
+}
+
+.label-input-inline span input {
+    width 100%;
 }

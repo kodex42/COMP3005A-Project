@@ -107,7 +107,6 @@ public class HomeController {
         model.addAttribute("users", userQueryService.getAllUsers());
         model.addAttribute("publishers", publisherQueryService.getAllPublishers());
         model.addAttribute("books", bookQueryService.getAllBooks());
-        model.addAttribute("purchases", purchaseQueryService.getAllPurchases());
         model.addAttribute("orders", orderQueryService.getAllOrders());
         return "admin";
     }
@@ -116,6 +115,7 @@ public class HomeController {
     public String getFinances(Model model) {
         log.info("Request: finances");
 
+        model.addAttribute("purchases", purchaseQueryService.getAllPurchases());
         model.addAttribute("sales_by_publisher", orderQueryService.getOrderTotalsGroupedByPublisher());
         model.addAttribute("sales_by_genre", orderQueryService.getOrderTotalsGroupedByGenre());
         model.addAttribute("sales_by_author", orderQueryService.getOrderTotalsGroupedByAuthorName());

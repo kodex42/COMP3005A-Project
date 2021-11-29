@@ -60,7 +60,7 @@ public class BookCommandService {
         for (PurchaseEntity p : purchases) {
             // Add total amount spent to dummy row
             HomeController.lostDataLosses = HomeController.lostDataLosses + p.getTotalCost();
-            purchaseCommandService.remove(p);
+//            purchaseCommandService.remove(p);
         }
         Iterable<BookOrderEntity> bookOrders = bookOrderEntityQueryService.getAllWithIsbn(isbn);
         for (BookOrderEntity b : bookOrders) {
@@ -68,7 +68,7 @@ public class BookCommandService {
             double income = b.getBook().getPrice() * b.getQuantity();
             double publisherCutLoss = income * b.getBook().getPublisherPercentage();
             HomeController.lostDataLosses = HomeController.lostDataLosses - income + publisherCutLoss;
-            bookOrderEntityCommandService.remove(b);
+//            bookOrderEntityCommandService.remove(b);
         }
         bookRepository.delete(bookEntity);
     }

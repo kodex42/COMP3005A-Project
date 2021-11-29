@@ -1,14 +1,13 @@
 package comp.A.project.controllers;
 
-import comp.A.project.DAO.AddressEntity;
 import comp.A.project.DAO.BookEntity;
 import comp.A.project.DAO.OrderEntity;
 import comp.A.project.DAO.UserEntity;
 import comp.A.project.forms.AddressForm;
 import comp.A.project.forms.OrderForm;
-import comp.A.project.forms.UserForm;
 import comp.A.project.services.command.BookCommandService;
 import comp.A.project.services.command.OrderCommandService;
+import comp.A.project.services.command.PurchaseCommandService;
 import comp.A.project.services.query.AddressQueryService;
 import comp.A.project.services.query.OrderQueryService;
 import comp.A.project.services.query.UserQueryService;
@@ -22,11 +21,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityExistsException;
-import javax.persistence.criteria.CriteriaBuilder;
 import javax.validation.Valid;
-import java.awt.print.Book;
 import java.security.Principal;
-import java.util.List;
 import java.util.Map;
 
 /*  OrderController
@@ -43,11 +39,13 @@ import java.util.Map;
 @RequestMapping("/order")
 public class OrderController {
     private static final Logger log = LoggerFactory.getLogger(UserController.class);
+    private static final Integer RESTOCK_TRIGGER = 2;
+    private static final Integer RESTOCK_AMOUNT = 10;
 
     @Autowired
     private HomeController homeController;
     @Autowired
-    private UserQueryService userQueryService;
+    private UserController userController;
     @Autowired
     private BookCommandService bookCommandService;
     @Autowired
@@ -56,17 +54,19 @@ public class OrderController {
     private OrderQueryService orderQueryService;
     @Autowired
     private OrderCommandService orderCommandService;
+    @Autowired
+    private PurchaseCommandService purchaseCommandService;
 
     @ModelAttribute("cart")
     public Map<BookEntity, Integer> initCart(Principal principal) throws NotFoundException {
-        return homeController.getShoppingCart(userQueryService.getByUsername(principal.getName()));
+        return homeController.getShoppingCart(userController.getCurrentUser(principal));
     }
 
     @GetMapping("")
     public String getOrder(Model model, Principal principal) throws NotFoundException {
         log.info("Request: view order form");
 
-        UserEntity user = userQueryService.getByUsername(principal.getName());
+        UserEntity user = userController.getCurrentUser(principal);
         Map<BookEntity, Integer> cart = homeController.getShoppingCart(user);
         double total = 0;
         for (BookEntity b : cart.keySet())
@@ -91,7 +91,7 @@ public class OrderController {
         if (!bindingResult.hasErrors()) {
             try {
                 OrderEntity order = orderCommandService.createOrder(orderForm);
-                UserEntity user = userQueryService.getByUsername(principal.getName());
+                UserEntity user = userController.getCurrentUser(principal);
                 // Retrieve and reset shopping cart
 //                Map<BookEntity, Integer> cart = Map.copyOf(orderForm.getBooksInOrder());
                 homeController.resetShoppingCart(user);
@@ -99,6 +99,11 @@ public class OrderController {
                 for (BookEntity b : cart.keySet()) {
                     b.addStockQuantity(-(cart.get(b)));
                     bookCommandService.save(b);
+                    if (b.getStockQuantity() <= RESTOCK_TRIGGER) {
+                        b.addStockQuantity(RESTOCK_AMOUNT);
+                        bookCommandService.save(b);
+                        purchaseCommandService.createPurchase(b, RESTOCK_AMOUNT);
+                    }
                 }
 
                 return "redirect:/user/profile";

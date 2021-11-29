@@ -1,10 +1,13 @@
 package comp.A.project.services.query;
 
 import comp.A.project.DAO.BookEntity;
+import comp.A.project.forms.BookFilterForm;
 import comp.A.project.repositories.BookRepository;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Locale;
 
 @Service
 public class BookQueryService {
@@ -15,27 +18,25 @@ public class BookQueryService {
         return bookRepository.findByISBN(ISBN).orElseThrow(() -> new NotFoundException("Book with specified ISBN not found"));
     }
 
+    public boolean bookExists(String isbn) {
+        return bookRepository.findByISBN(isbn).isPresent();
+    }
+
     public Iterable<BookEntity> getAllBooks() {
         return bookRepository.findAll();
     }
 
-    public Iterable<BookEntity> getAllWithTitleContaining(String title) {
-        return bookRepository.findAllWithTitleContaining(title);
-    }
-
-    public Iterable<BookEntity> getAllBooksWithGenre(String genre) {
-        return bookRepository.findAllByGenre(genre);
-    }
-
-    public Iterable<BookEntity> getAllByAuthorName(String authorName) {
-        return bookRepository.findAllByAuthorName(authorName);
-    }
-
-    public Iterable<BookEntity> getAllByPublisherName(String publisherName) {
-        return bookRepository.findAllByPublisherName(publisherName);
-    }
-
-    public Iterable<BookEntity> getAllInPriceRange(double low, double high) {
-        return bookRepository.findAllInPriceRange(low, high);
+    public Iterable<BookEntity> getFilteredBooks(BookFilterForm bookFilterForm) {
+        return bookRepository.getFilteredBooks(
+                bookFilterForm.getISBN(),
+                bookFilterForm.getTitle().toLowerCase(),
+                bookFilterForm.getAuthor().toLowerCase(),
+                bookFilterForm.getPublisher().toLowerCase(),
+                bookFilterForm.getGenre().toLowerCase(),
+                bookFilterForm.getPagesMin(),
+                bookFilterForm.getPagesMax(),
+                bookFilterForm.getPriceMin(),
+                bookFilterForm.getPriceMax()
+        );
     }
 }

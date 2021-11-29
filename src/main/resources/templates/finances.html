@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:insert="fragments.html :: head"></head>
+<body>
+<header th:insert="fragments.html :: nav"></header>
+<div class="content">
+    <h1>Finances</h1>
+    <a class="cart-button" th:href="@{/admin}">View System</a>
+    <a class="cart-button" th:href="@{/book/new}">Add Book to System</a>
+    <div class="stats">
+        <div class="stats-item">
+            <table>
+                <thead><h2>Profits and Losses</h2></thead>
+                <tbody>
+                <tr>
+                    <th>Income</th>
+                    <th>Publisher Cut</th>
+                    <th>Expenses</th>
+                    <th>Unaccounted Losses</th>
+                    <th>Profit</th>
+                </tr>
+                <tr>
+                    <td th:text="'$' + ${#numbers.formatDecimal(income, 1, 2)}"></td>
+                    <td th:text="'$' + ${#numbers.formatDecimal(publisher_cuts, 1, 2)}"></td>
+                    <td th:text="'$' + ${#numbers.formatDecimal(expenses, 1, 2)}"></td>
+                    <td th:text="'$' + ${#numbers.formatDecimal(lost_data_losses, 1, 2)}"></td>
+                    <td th:style="${profit} < 0 ? 'color:red' : 'color:green'" th:text="'$' + ${#numbers.formatDecimal(profit, 1, 2)}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="stats-item">
+            <table>
+                <thead><h2>Sales By Publisher</h2></thead>
+                <tbody>
+                <tr>
+                    <th>Publisher</th>
+                    <th>Income</th>
+                </tr>
+                <tr th:each="sales : ${sales_by_publisher}">
+                    <td th:text="${sales[0]}"></td>
+                    <td th:text="'$' + ${sales[1]}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="stats-item">
+            <table>
+                <thead><h2>Sales By Author</h2></thead>
+                <tbody>
+                <tr>
+                    <th>Author</th>
+                    <th>Income</th>
+                </tr>
+                <tr th:each="sales : ${sales_by_author}">
+                    <td th:text="${sales[0]}"></td>
+                    <td th:text="'$' + ${sales[1]}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="stats-item">
+            <table>
+                <thead><h2>Sales By Genre</h2></thead>
+                <tbody>
+                <tr>
+                    <th>Genre</th>
+                    <th>Income</th>
+                </tr>
+                <tr th:each="sales : ${sales_by_genre}">
+                    <td th:text="${sales[0]}"></td>
+                    <td th:text="'$' + ${sales[1]}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>

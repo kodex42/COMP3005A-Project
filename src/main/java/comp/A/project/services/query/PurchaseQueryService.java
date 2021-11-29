@@ -14,6 +14,10 @@ public class PurchaseQueryService {
         return purchaseRepository.findAll();
     }
 
+    public Iterable<PurchaseEntity> getAllWithISBN(String isbn) {
+        return purchaseRepository.getAllWithIsbn(isbn);
+    }
+
     public double getTotalExpenses() {
         return purchaseRepository.sumTotals();
     }

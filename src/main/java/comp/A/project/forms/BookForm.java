@@ -1,5 +1,6 @@
 package comp.A.project.forms;
 
+import javax.validation.constraints.DecimalMax;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
@@ -19,6 +20,7 @@ public class BookForm {
     @DecimalMin(value = "0.0", message = "Books cannot be free", inclusive = false)
     private double price;
     @DecimalMin(value = "0.0", message = "Publisher percentage must be positive", inclusive = false)
+    @DecimalMax(value = "0.2", message = "Publisher percentage cannot be higher than 20%", inclusive = false)
     private double publisherPercentage;
     @Min(value = 0, message = "Amount in stock cannot be negative")
     private int stockQuantity;

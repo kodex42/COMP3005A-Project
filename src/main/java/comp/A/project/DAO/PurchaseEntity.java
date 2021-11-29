@@ -12,13 +12,13 @@ public class PurchaseEntity {
     @EmbeddedId
     private PurchaseEntityCandidateKey id;
     @Column(name = "total_cost", precision = 10, scale = 2)
-    private BigDecimal totalCost;
+    private Double totalCost;
 
-    public BigDecimal getTotalCost() {
+    public Double getTotalCost() {
         return totalCost;
     }
 
-    public void setTotalCost(BigDecimal totalCost) {
+    public void setTotalCost(double totalCost) {
         this.totalCost = totalCost;
     }
 

@@ -2,12 +2,9 @@ package comp.A.project.controllers;
 
 import comp.A.project.DAO.BookEntity;
 import comp.A.project.DAO.UserEntity;
+import comp.A.project.forms.BookFilterForm;
 import comp.A.project.forms.UserForm;
-import comp.A.project.services.query.BookQueryService;
-import comp.A.project.services.query.OrderQueryService;
-import comp.A.project.services.query.PublisherQueryService;
-import comp.A.project.services.query.PurchaseQueryService;
-import comp.A.project.services.query.UserQueryService;
+import comp.A.project.services.query.*;
 import javassist.NotFoundException;
 import org.apache.commons.collections4.map.PassiveExpiringMap;
 import org.slf4j.Logger;
@@ -15,11 +12,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
+import javax.validation.Valid;
 import java.security.Principal;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -36,6 +37,7 @@ import java.util.concurrent.TimeUnit;
 @Controller
 public class HomeController {
     private static final Logger log = LoggerFactory.getLogger(HomeController.class);
+    public static double lostDataLosses = 0.0;
 
     @Autowired
     private UserQueryService userQueryService;
@@ -46,12 +48,14 @@ public class HomeController {
     @Autowired
     private OrderQueryService orderQueryService;
     @Autowired
+    private BookOrderEntityQueryService bookOrderEntityQueryService;
+    @Autowired
     private PurchaseQueryService purchaseQueryService;
 
     private final Map<String, Map<BookEntity, Integer>> shoppingCarts = new PassiveExpiringMap<>(10, TimeUnit.MINUTES);
 
-    @GetMapping({"/", "/index"})
-    public String getHome(Model model, Principal principal) {
+    @GetMapping("/")
+    public String getHome(@Valid BookFilterForm bookFilterForm, BindingResult bindingResult, Model model, Principal principal) {
         log.info("Request: index");
 
         // Is user authenticated?
@@ -69,7 +73,16 @@ public class HomeController {
                 e.printStackTrace();
             }
         }
-        model.addAttribute("books", bookQueryService.getAllBooks());
+        Iterable<BookEntity> books;
+        if (bookFilterForm == null) {
+            books = bookQueryService.getAllBooks();
+            model.addAttribute("filters", new BookFilterForm());
+        }
+        else {
+            books = bookQueryService.getFilteredBooks(bookFilterForm);
+            model.addAttribute("filters", bookFilterForm);
+        }
+        model.addAttribute("books", books);
         return "home";
     }
 
@@ -96,12 +109,25 @@ public class HomeController {
         model.addAttribute("books", bookQueryService.getAllBooks());
         model.addAttribute("purchases", purchaseQueryService.getAllPurchases());
         model.addAttribute("orders", orderQueryService.getAllOrders());
+        return "admin";
+    }
+
+    @GetMapping("/finances")
+    public String getFinances(Model model) {
+        log.info("Request: finances");
+
+        model.addAttribute("sales_by_publisher", orderQueryService.getOrderTotalsGroupedByPublisher());
+        model.addAttribute("sales_by_genre", orderQueryService.getOrderTotalsGroupedByGenre());
+        model.addAttribute("sales_by_author", orderQueryService.getOrderTotalsGroupedByAuthorName());
         double expenses = purchaseQueryService.getTotalExpenses();
-        double income = orderQueryService.getTotalIncome();
+        double income = bookOrderEntityQueryService.getTotalIncome();
+        double publisherCuts = bookOrderEntityQueryService.getTotalPublisherCut();
         model.addAttribute("expenses", expenses);
         model.addAttribute("income", income);
-        model.addAttribute("profit", income - expenses);
-        return "admin";
+        model.addAttribute("publisher_cuts", publisherCuts);
+        model.addAttribute("lost_data_losses", lostDataLosses);
+        model.addAttribute("profit", income - publisherCuts - expenses - lostDataLosses);
+        return "finances";
     }
 
     public void addToCart(UserEntity user, BookEntity book, int qty) {

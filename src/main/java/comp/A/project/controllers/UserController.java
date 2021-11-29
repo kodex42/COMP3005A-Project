@@ -43,17 +43,23 @@ public class UserController {
     @Autowired
     private HomeController homeController;
     @Autowired
-    private OrderController orderController;
-    @Autowired
     private UserQueryService userQueryService;
     @Autowired
     private UserCommandService userCommandService;
     @Autowired
-    private BookQueryService bookQueryService;
-    @Autowired
     private AddressQueryService addressQueryService;
     @Autowired
     private AddressCommandService addressCommandService;
+    @Autowired
+    private BookQueryService bookQueryService;
+
+    public Iterable<UserEntity> getAllUsers() {
+        return userQueryService.getAllUsers();
+    }
+
+    public UserEntity getCurrentUser(Principal principal) throws NotFoundException {
+        return userQueryService.getByUsername(principal.getName());
+    }
 
     @GetMapping("/profile")
     public String viewProfile(Model model, Principal principal) {
@@ -62,7 +68,7 @@ public class UserController {
         // Is user authenticated?
         if (principal != null) {
             try {
-                UserEntity user = userQueryService.getByUsername(principal.getName());
+                UserEntity user = getCurrentUser(principal);
                 model.addAttribute("user", user);
                 model.addAttribute("orders", user.getOrders());
                 model.addAttribute("billingAddressForm", new AddressForm(user.getBillingAddress()));
@@ -101,7 +107,7 @@ public class UserController {
         // Is user authenticated?
         if (principal != null) {
             try {
-                user = userQueryService.getByUsername(principal.getName());
+                user = getCurrentUser(principal);
             } catch (NotFoundException e) {
                 e.printStackTrace();
             }
@@ -118,14 +124,14 @@ public class UserController {
     }
 
     @PostMapping("/cart")
-    public String addBookToUserCart(@RequestParam(value = "ISBN") String ISBN, @RequestParam(value = "qty") Integer qty, Principal principal, HttpServletRequest request) {
-        log.info("Request: add book " + ISBN + " to current user's cart");
+    public String addBookToUserCart(@RequestParam(value = "ISBN") String isbn, @RequestParam(value = "qty") Integer qty, Principal principal, HttpServletRequest request) {
+        log.info("Request: add book " + isbn + " to current user's cart");
 
         // Is user authenticated?
         if (principal != null) {
             try {
-                UserEntity user = userQueryService.getByUsername(principal.getName());
-                BookEntity book = bookQueryService.getBook(ISBN);
+                UserEntity user = getCurrentUser(principal);
+                BookEntity book = bookQueryService.getBook(isbn);
                 homeController.addToCart(user, book, qty);
             } catch (NotFoundException e) {
                 e.printStackTrace();
@@ -136,14 +142,14 @@ public class UserController {
     }
 
     @DeleteMapping("/cart")
-    public String RemoveBookFromUserCart(@RequestParam(value = "ISBN") String ISBN, @RequestParam(value = "qty") Integer qty, Principal principal, HttpServletRequest request) {
-        log.info("Request: remove book " + ISBN + " from current user's cart");
+    public String RemoveBookFromUserCart(@RequestParam(value = "ISBN") String isbn, @RequestParam(value = "qty") Integer qty, Principal principal, HttpServletRequest request) {
+        log.info("Request: remove book " + isbn + " from current user's cart");
 
         // Is user authenticated?
         if (principal != null) {
             try {
-                UserEntity user = userQueryService.getByUsername(principal.getName());
-                BookEntity book = bookQueryService.getBook(ISBN);
+                UserEntity user = getCurrentUser(principal);
+                BookEntity book = bookQueryService.getBook(isbn);
                 homeController.removeFromCart(user, book, qty);
             } catch (NotFoundException e) {
                 e.printStackTrace();

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:insert="fragments.html :: head"></head>
+<body>
+<header th:insert="fragments.html :: nav"></header>
+<div class="content">
+    <form th:action="@{/book/create}" th:method="post" th:object="${bookForm}">
+        <p class="stats-item error" th:if="${#fields.hasGlobalErrors()}" th:errors="*{global}">Global Error</p>
+        <div>
+            <label for="isbn">ISBN: </label>
+            <input id="isbn" type="text" th:field="*{ISBN}">&nbsp;<label class="error" for="isbn" th:if="${#fields.hasErrors('ISBN')}" th:errors="*{ISBN}">ISBN Error</label>
+        </div>
+        <div>
+            <label for="title">Title: </label>
+            <input id="title" type="text" th:field="*{title}">&nbsp;<label class="error" for="title" th:if="${#fields.hasErrors('title')}" th:errors="*{title}">Title Error</label>
+        </div>
+        <div>
+            <label for="author">Author: </label>
+            <input id="author" type="text" th:field="*{author}">&nbsp;<label class="error" for="author" th:if="${#fields.hasErrors('author')}" th:errors="*{author}">Author Error</label>
+        </div>
+        <div>
+            <label for="publisher">Publisher: </label>
+            <select id="publisher" th:field="*{publisherName}">
+                <option th:value="NULL">Select Publisher</option>
+                <option th:each="publisher : ${publishers}" th:value="${publisher.getName()}" th:text="${publisher.getName()}"></option>
+            </select>&nbsp;<label class="error" for="publisher" th:if="${#fields.hasErrors('publisherName')}" th:errors="*{publisherName}">Publisher Error</label>
+        </div>
+        <div>
+            <label for="genre">Genre: </label>
+            <input id="genre" type="text" th:field="*{genre}">&nbsp;<label class="error" for="genre" th:if="${#fields.hasErrors('genre')}" th:errors="*{genre}">Genre Error</label>
+        </div>
+        <div>
+            <label for="price">Price: </label>
+            <input id="price" type="number" step="0.01" value="0.00" placeholder="0.00" th:field="*{price}">&nbsp;<label class="error" for="price" th:if="${#fields.hasErrors('price')}" th:errors="*{price}">Price Error</label>
+        </div>
+        <div>
+            <label for="publisherPercentage">Publisher Percentage: </label>
+            <input id="publisherPercentage" type="number" step="0.01" value="0.00" placeholder="0.00" th:field="*{publisherPercentage}">&nbsp;<label class="error" for="publisherPercentage" th:if="${#fields.hasErrors('publisherPercentage')}" th:errors="*{publisherPercentage}">Publisher Percentage Error</label>
+        </div>
+        <div>
+            <label for="stockQuantity">Stock Quantity: </label>
+            <input id="stockQuantity" type="number" step="1" value="10" placeholder="0" th:field="*{stockQuantity}">&nbsp;<label class="error" for="stockQuantity" th:if="${#fields.hasErrors('stockQuantity')}" th:errors="*{stockQuantity}">Stock Quantity Error</label>
+        </div>
+        <button type="submit" class="login-register-button">Create</button>
+    </form>
+</div>
+</body>
+</html>

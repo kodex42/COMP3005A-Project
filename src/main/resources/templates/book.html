@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
+<head th:insert="fragments.html :: head"></head>
+<body>
+<header th:insert="fragments.html :: nav"></header>
+<div class="content">
+    <table th:if="${book != null}">
+        <thead><h2 th:text="${book.getTitle()}"></h2></thead>
+        <tr>
+            <td>ISBN</td>
+            <td th:text="${book.getISBN()}"></td>
+        </tr>
+        <tr>
+            <td>Author</td>
+            <td th:text="${book.getAuthorName()}"></td>
+        </tr>
+        <tr>
+            <td>Publisher</td>
+            <td th:text="${book.getPublisher().getName()}"></td>
+        </tr>
+        <tr>
+            <td>Genre</td>
+            <td th:text="${book.getGenre()}"></td>
+        </tr>
+        <tr>
+            <td>Pages</td>
+            <td th:text="${book.getPages()}"></td>
+        </tr>
+        <tr>
+            <td>Price</td>
+            <td th:text="'$' + ${book.getPrice()}"></td>
+        </tr>
+        <tr sec:authorize="isAuthenticated()" th:if="${user.getAuthority() == 'ADMIN'}">
+            <td>Publisher Percentage</td>
+            <td th:text="${book.getPublisherPercentage()}"></td>
+        </tr>
+        <tr>
+            <td>In Stock</td>
+            <td th:text="${book.getStockQuantity()}"></td>
+        </tr>
+        <tr sec:authorize="isAuthenticated()" th:if="${user.getAuthority() == 'USER'}">
+            <td></td>
+            <td sec:authorize="isAuthenticated()" class="td-no-pad">
+                <form th:action="@{/user/cart(ISBN=${book.getISBN()}, qty=1)}" th:method="post">
+                    <button type="submit" class="cart-button">Add To Cart</button>
+                </form>
+            </td>
+        </tr>
+    </table>
+    <div class="right-stats">
+        <div class="stats-item" th:if="${cart != null and !cart.empty}">
+            <table>
+                <thead><h2>Cart</h2></thead>
+                <tbody>
+                <tr>
+                    <th>Title</th>
+                    <th>Price</th>
+                    <th>Qty</th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                </tr>
+                <tr th:each="bookEntity: ${#lists.sort(cart.keySet())}">
+                    <td><a th:href="@{/book(isbn=${bookEntity.getISBN()})}" th:text="${bookEntity.getTitle()}"></a></td>
+                    <td th:text="'$' + ${bookEntity.getPrice()}"></td>
+                    <td th:text="${cart.get(bookEntity)}"></td>
+                    <td class="td-no-pad">
+                        <form th:action="@{/user/cart(ISBN=${bookEntity.getISBN()}, qty=1)}" th:method="post">
+                            <button type="submit" class="cart-button">+</button>
+                        </form>
+                    </td>
+                    <td class="td-no-pad">
+                        <form th:action="@{/user/cart(ISBN=${bookEntity.getISBN()}, qty=1)}" th:method="delete">
+                            <button type="submit" class="cart-button">-</button>
+                        </form>
+                    </td>
+                    <td class="td-no-pad">
+                        <form th:action="@{/user/cart(ISBN=${bookEntity.getISBN()}, qty=999)}" th:method="delete">
+                            <button type="submit" class="cart-button">X</button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <form th:action="@{/user/confirm_cart}" th:method="post">
+                <button type="submit" class="cart-button">Confirm Cart</button>
+            </form>
+        </div>
+    </div>
+</div>
+</div>
+</body>
+</html>

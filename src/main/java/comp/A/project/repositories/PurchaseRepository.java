@@ -9,4 +9,7 @@ public interface PurchaseRepository extends CrudRepository<PurchaseEntity, Purch
 
     @Query(value = "SELECT COALESCE(SUM(total_cost), 0) FROM purchase", nativeQuery = true)
     double sumTotals();
+
+    @Query(value = "SELECT * FROM purchase WHERE ISBN = ?1", nativeQuery = true)
+    Iterable<PurchaseEntity> getAllWithIsbn(String isbn);
 }

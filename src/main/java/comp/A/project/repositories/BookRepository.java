@@ -10,15 +10,9 @@ public interface BookRepository extends CrudRepository<BookEntity, String> {
 
     Optional<BookEntity> findByISBN(String ISBN);
 
-    @Query(value = "SELECT * FROM book WHERE title LIKE ?1", nativeQuery = true)
-    Iterable<BookEntity> findAllWithTitleContaining(String title);
-
-    Iterable<BookEntity> findAllByGenre(String genre);
-
-    Iterable<BookEntity> findAllByAuthorName(String authorName);
-
-    Iterable<BookEntity> findAllByPublisherName(String publisherName);
-
     @Query(value = "SELECT * FROM book WHERE price BETWEEN ?1 AND ?2", nativeQuery = true)
     Iterable<BookEntity> findAllInPriceRange(double low, double high);
+
+    @Query(value = "SELECT * FROM book WHERE isbn LIKE %?1% AND LOWER(title) LIKE %?2% AND LOWER(author_name) LIKE %?3% AND LOWER(publisher_name) LIKE %?4% AND LOWER(genre) LIKE %?5% AND pages BETWEEN ?6 AND ?7 AND price BETWEEN ?8 AND ?9", nativeQuery = true)
+    Iterable<BookEntity> getFilteredBooks(String isbn, String title, String author, String publisher, String genre, int pagesMin, int pagesMax, double priceMin, double priceMax);
 }

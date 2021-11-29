@@ -50,4 +50,20 @@ public class BookOrderEntity {
     public void setOrderNo(Long orderNo) {
         this.id.setOrderNo(orderNo);
     }
+
+    public OrderEntity getOrder() {
+        return order;
+    }
+
+    public void setOrder(OrderEntity order) {
+        this.order = order;
+    }
+
+    public BookEntity getBook() {
+        return book;
+    }
+
+    public void setBook(BookEntity book) {
+        this.book = book;
+    }
 }

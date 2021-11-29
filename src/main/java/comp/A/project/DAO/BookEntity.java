@@ -11,10 +11,6 @@ import java.util.List;
 @Entity
 @Table(name = "book", schema = "public")
 public class BookEntity implements Comparable {
-    @Transient
-    @Autowired
-    private PublisherQueryService publisherQueryService;
-
     @Id
     private String ISBN;
     private String title;
@@ -35,12 +31,12 @@ public class BookEntity implements Comparable {
         super();
     }
 
-    public BookEntity(BookForm bookForm) throws NotFoundException {
+    public BookEntity(BookForm bookForm) {
         super();
         this.ISBN = bookForm.getISBN();
         this.title = bookForm.getTitle();
         this.authorName = bookForm.getAuthor();
-        this.publisher = publisherQueryService.getByName(bookForm.getPublisherName());
+        this.publisher = null;
         this.genre = bookForm.getGenre();
         this.pages = bookForm.getPages();
         this.price = bookForm.getPrice();

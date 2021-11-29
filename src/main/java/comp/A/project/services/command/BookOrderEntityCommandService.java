@@ -13,4 +13,8 @@ public class BookOrderEntityCommandService {
     public BookOrderEntity create(BookOrderEntity bookOrderEntity) {
         return bookOrderEntityRepository.save(bookOrderEntity);
     }
+
+    public void remove(BookOrderEntity bookOrderEntity) {
+        bookOrderEntityRepository.delete(bookOrderEntity);
+    }
 }

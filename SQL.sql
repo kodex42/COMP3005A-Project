@@ -6,7 +6,6 @@ drop table if exists "order" cascade;
 drop table if exists purchase cascade;
 drop table if exists book cascade;
 drop table if exists book_order cascade;
-drop table if exists lost_financial_data;
 
 create table postal_region
 	(postal_code	varchar(7),
@@ -102,11 +101,3 @@ create table purchase
 	 foreign key (ISBN) references book
 	 	on delete cascade
 	);
-
-create table lost_financial_data 
-	(data_id	serial,
-	ISBN		varchar(13),
-	income		numeric(10, 2),
-	loss		numeric(10, 2),
-	primary key (data_id)
-);

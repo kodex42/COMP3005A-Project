@@ -39,8 +39,6 @@ import java.util.Map;
 @RequestMapping("/order")
 public class OrderController {
     private static final Logger log = LoggerFactory.getLogger(UserController.class);
-    private static final Integer RESTOCK_TRIGGER = 2;
-    private static final Integer RESTOCK_AMOUNT = 10;
 
     @Autowired
     private HomeController homeController;
@@ -99,11 +97,7 @@ public class OrderController {
                 for (BookEntity b : cart.keySet()) {
                     b.addStockQuantity(-(cart.get(b)));
                     bookCommandService.save(b);
-                    if (b.getStockQuantity() <= RESTOCK_TRIGGER) {
-                        b.addStockQuantity(RESTOCK_AMOUNT);
-                        bookCommandService.save(b);
-                        purchaseCommandService.createPurchase(b, RESTOCK_AMOUNT);
-                    }
+                    // Restocking is handled by database triggers
                 }
 
                 return "redirect:/user/profile";

@@ -3,6 +3,7 @@ package comp.A.project.controllers;
 import comp.A.project.DAO.BookEntity;
 import comp.A.project.DAO.UserEntity;
 import comp.A.project.forms.BookFilterForm;
+import comp.A.project.forms.FinancesFilterForm;
 import comp.A.project.forms.UserForm;
 import comp.A.project.services.query.*;
 import javassist.NotFoundException;
@@ -15,9 +16,14 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.thymeleaf.util.DateUtils;
 
 import javax.validation.Valid;
 import java.security.Principal;
+import java.sql.Time;
+import java.sql.Timestamp;
+import java.time.Instant;
+import java.time.temporal.TemporalAmount;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -112,13 +118,23 @@ public class HomeController {
     }
 
     @GetMapping("/finances")
-    public String getFinances(Model model) {
+    public String getFinances(@Valid FinancesFilterForm financesFilterForm, BindingResult bindingResult, Model model) {
         log.info("Request: finances");
 
         model.addAttribute("purchases", purchaseQueryService.getAllPurchases());
         model.addAttribute("sales_by_publisher", orderQueryService.getOrderTotalsGroupedByPublisher());
         model.addAttribute("sales_by_genre", orderQueryService.getOrderTotalsGroupedByGenre());
         model.addAttribute("sales_by_author", orderQueryService.getOrderTotalsGroupedByAuthorName());
+        Iterable<Object[]> salesBetweenDates;
+        if (bindingResult.hasErrors()) {
+            salesBetweenDates = orderQueryService.getOrderTotalsWithinDateRange(Timestamp.from(Instant.EPOCH), Timestamp.from(Instant.MAX));
+            model.addAttribute("filters", new FinancesFilterForm());
+        }
+        else {
+            salesBetweenDates = orderQueryService.getOrderTotalsWithinDateRange(Timestamp.from(financesFilterForm.getStart().toInstant()), Timestamp.from(financesFilterForm.getEnd().toInstant()));
+            model.addAttribute("filters", financesFilterForm);
+        }
+        model.addAttribute("salesBetweenDates", salesBetweenDates);
         double expenses = purchaseQueryService.getTotalExpenses();
         double income = bookOrderEntityQueryService.getTotalIncome();
         double publisherCuts = bookOrderEntityQueryService.getTotalPublisherCut();

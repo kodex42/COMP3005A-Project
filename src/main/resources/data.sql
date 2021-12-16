@@ -48,25 +48,3 @@ insert into book
 values ('9782894064719', 'Les confitures de coings', 'Jacques Ferron', (select name from publisher where name = 'Livres BQ'), 'Novel', 352, 14.95, 0.19, 10);
 insert into book
 values ('9782894064726', 'Le cerveau et la musique', 'Michel Rochon', (select name from publisher where name = 'Livres BQ'), 'Essay', 192, 10.95, 0.05, 10);
-
--- Inital Purchases for Initial Books
-insert into purchase
-values ((select ISBN from book where ISBN = '9781552210659'), NOW(), 10, 134.75);
-insert into purchase
-values ((select ISBN from book where ISBN = '9781552214169'), NOW(), 10, 249.75);
-insert into purchase
-values ((select ISBN from book where ISBN = '9781552213742'), NOW(), 10, 300.00);
-insert into purchase
-values ((select ISBN from book where ISBN = '9781552213377'), NOW(), 10, 174.75);
-insert into purchase
-values ((select ISBN from book where ISBN = '9781552215784'), NOW(), 10, 375.00);
-insert into purchase
-values ((select ISBN from book where ISBN = '9782894064498'), NOW(), 10, 59.75);
-insert into purchase
-values ((select ISBN from book where ISBN = '9782894064702'), NOW(), 10, 59.75);
-insert into purchase
-values ((select ISBN from book where ISBN = '9782894064733'), NOW(), 10, 59.75);
-insert into purchase
-values ((select ISBN from book where ISBN = '9782894064719'), NOW(), 10, 74.75);
-insert into purchase
-values ((select ISBN from book where ISBN = '9782894064726'), NOW(), 10, 54.75);

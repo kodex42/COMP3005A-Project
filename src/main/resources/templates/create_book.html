@@ -30,6 +30,10 @@
             <input id="genre" type="text" th:field="*{genre}">&nbsp;<label class="error" for="genre" th:if="${#fields.hasErrors('genre')}" th:errors="*{genre}">Genre Error</label>
         </div>
         <div>
+            <label for="pages">Pages: </label>
+            <input id="pages" type="number" step="1" value="0" placeholder="0" th:field="*{pages}">&nbsp;<label class="error" for="pages" th:if="${#fields.hasErrors('pages')}" th:errors="*{pages}">Pages Error</label>
+        </div>
+        <div>
             <label for="price">Price: </label>
             <input id="price" type="number" step="0.01" value="0.00" placeholder="0.00" th:field="*{price}">&nbsp;<label class="error" for="price" th:if="${#fields.hasErrors('price')}" th:errors="*{price}">Price Error</label>
         </div>

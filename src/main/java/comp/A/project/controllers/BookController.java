@@ -87,7 +87,6 @@ public class BookController {
         if (!bindingResult.hasErrors()) {
             try {
                 BookEntity bookEntity = bookCommandService.create(bookForm);
-                purchaseCommandService.createPurchase(bookEntity, bookForm.getStockQuantity());
                 return "redirect:/book?isbn=" + bookForm.getISBN();
             } catch (NotFoundException e) {
                 bindingResult.rejectValue("publisherName", e.getMessage());

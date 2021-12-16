@@ -8,7 +8,84 @@
     <a class="cart-button" th:href="@{/admin}">View System</a>
     <a class="cart-button" th:href="@{/book/new}">Add Book to System</a>
     <div class="stats">
-        <div class="stats-item">
+        <div class="stats-item-low-flex">
+            <form th:action="@{/finances}" th:method="get" th:object="${filters}">
+                <h3>Date Range Filter</h3>
+                <div class="label-input-inline">
+                    <label for="filter-start">Start Date: </label><span><input id="filter-start" type="date" th:field="*{start}" th:value="${filters.start}"/></span><br/>
+                    <label for="filter-end">End Date: </label><span><input id="filter-end" type="date" th:field="*{end}" th:value="${filters.end}"/></span><br/>
+                    <button type="submit" class="cart-button">Apply Filter</button>
+                </div>
+            </form>
+        </div>
+        <div class="stats-item-low-flex">
+            <table>
+                <thead><h2>Sales In Date Range</h2></thead>
+                <tbody>
+                <tr>
+                    <th>ISBN</th>
+                    <th>Price Per Unit</th>
+                    <th>Quantity</th>
+                    <th>Order Number</th>
+                    <th>Income</th>
+                </tr>
+                <tr th:each="sales : ${salesBetweenDates}">
+                    <td><a th:href="@{/book(isbn=${sales[0]})}" th:text="${sales[0]}"></a></td>
+                    <td th:text="'$' + ${sales[1]}"></td>
+                    <td th:text="${sales[2]}"></td>
+                    <td th:text="${sales[3]}"></td>
+                    <td th:text="'$' + ${sales[4]}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="stats-item-low-flex">
+            <table>
+                <thead><h2>Sales By Publisher</h2></thead>
+                <tbody>
+                <tr>
+                    <th>Publisher</th>
+                    <th>Income</th>
+                </tr>
+                <tr th:each="sales : ${sales_by_publisher}">
+                    <td th:text="${sales[0]}"></td>
+                    <td th:text="'$' + ${sales[1]}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="stats-item-low-flex">
+            <table>
+                <thead><h2>Sales By Author</h2></thead>
+                <tbody>
+                <tr>
+                    <th>Author</th>
+                    <th>Income</th>
+                </tr>
+                <tr th:each="sales : ${sales_by_author}">
+                    <td th:text="${sales[0]}"></td>
+                    <td th:text="'$' + ${sales[1]}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="stats-item-low-flex">
+            <table>
+                <thead><h2>Sales By Genre</h2></thead>
+                <tbody>
+                <tr>
+                    <th>Genre</th>
+                    <th>Income</th>
+                </tr>
+                <tr th:each="sales : ${sales_by_genre}">
+                    <td th:text="${sales[0]}"></td>
+                    <td th:text="'$' + ${sales[1]}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="flex-break"></div>
+        <div class="stats-item-low-flex">
             <table>
                 <thead><h2>Purchases</h2></thead>
                 <tbody>
@@ -20,14 +97,14 @@
                 </tr>
                 <tr th:each="purchaseEntity: ${purchases}">
                     <td th:text="${purchaseEntity.getId().getISBN()}"></td>
-                    <td th:text="${purchaseEntity.getId().getDate()}"></td>
+                    <td th:text="${#dates.format(purchaseEntity.getId().getDate(), 'yyyy-MM-dd HH:mm')}"></td>
                     <td th:text="${purchaseEntity.getId().getQuantity()}"></td>
                     <td th:text="'$' + ${purchaseEntity.getTotalCost()}"></td>
                 </tr>
                 </tbody>
             </table>
         </div>
-        <div class="stats-item">
+        <div class="stats-item-low-flex">
             <table>
                 <thead><h2>Profits and Losses</h2></thead>
                 <tbody>
@@ -44,51 +121,6 @@
                     <td th:text="'$' + ${#numbers.formatDecimal(expenses, 1, 2)}"></td>
                     <td th:text="'$' + ${#numbers.formatDecimal(lost_data_losses, 1, 2)}"></td>
                     <td th:style="${profit} < 0 ? 'color:red' : 'color:green'" th:text="'$' + ${#numbers.formatDecimal(profit, 1, 2)}"></td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-        <div class="stats-item">
-            <table>
-                <thead><h2>Sales By Publisher</h2></thead>
-                <tbody>
-                <tr>
-                    <th>Publisher</th>
-                    <th>Income</th>
-                </tr>
-                <tr th:each="sales : ${sales_by_publisher}">
-                    <td th:text="${sales[0]}"></td>
-                    <td th:text="'$' + ${sales[1]}"></td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-        <div class="stats-item">
-            <table>
-                <thead><h2>Sales By Author</h2></thead>
-                <tbody>
-                <tr>
-                    <th>Author</th>
-                    <th>Income</th>
-                </tr>
-                <tr th:each="sales : ${sales_by_author}">
-                    <td th:text="${sales[0]}"></td>
-                    <td th:text="'$' + ${sales[1]}"></td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-        <div class="stats-item">
-            <table>
-                <thead><h2>Sales By Genre</h2></thead>
-                <tbody>
-                <tr>
-                    <th>Genre</th>
-                    <th>Income</th>
-                </tr>
-                <tr th:each="sales : ${sales_by_genre}">
-                    <td th:text="${sales[0]}"></td>
-                    <td th:text="'$' + ${sales[1]}"></td>
                 </tr>
                 </tbody>
             </table>

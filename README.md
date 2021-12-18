@@ -9,9 +9,9 @@ To run this project, simply download the source code as a zip file from this rep
 With the project open, it should start initializing the project with its given Maven configuration.
 Once the project is loaded, start the included run configuration.
 
-Upon startup, the project will populate the database with some publishers, books, purchases, and users.
+Upon startup, the project will populate the database with some publishers, books, and users.
 The normal user has username and password "user". The admin user has username and password "admin".
-I the application throws a PLSQLException on startup, please check your configuration of the application.properties file at src/main/resources/.
+If the application throws a PLSQLException on startup, please check your configuration of the application.properties file at src/main/resources/.
 
 To access the application, open any web browser and visit the address localhost:8080.
 With the web page open, you can log in with either the default "user" account or the default "admin" account.

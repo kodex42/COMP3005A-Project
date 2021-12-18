@@ -7,8 +7,7 @@ import javax.validation.constraints.Pattern;
 
 public class AddressForm {
     private String name;
-    @Pattern(regexp = "^[A-Z]\\d[A-Z] \\d[A-Z]\\d", message = "Post code is not valid")
-    @NotEmpty(message = "Postal code is required")
+    @Pattern(regexp = "^[A-Z]\\d[A-Z] \\d[A-Z]\\d", message = "Postal code is not valid")
     private String postalCode;
     @NotEmpty(message = "Province is required")
     private String province;

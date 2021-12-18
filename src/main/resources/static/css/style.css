@@ -7,7 +7,7 @@ h1 {
 }
 
 .content {
-    padding: 16px;
+    padding: 0px 16px;
 }
 
 .error {
@@ -99,7 +99,8 @@ th {
     gap: 10px;
 }
 
-.stats .error {
+.stats .global-error {
+    color: red;
     position: absolute;
     top: 50px;
 }
@@ -114,7 +115,8 @@ th {
 }
 
 .right-stats {
-    margin-left: auto;
+    position: fixed;
+    right: 10px;
     order: 2;
     display: flex;
     justify-content:flex-end;

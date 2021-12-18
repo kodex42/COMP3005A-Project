@@ -10,20 +10,28 @@
             <form class="stats" th:action="@{/order/create}" th:method="post" th:object="${orderForm}">
                 <input type="hidden" th:field="*{user}" />
                 <input type="hidden" th:field="*{total}" />
-                <div class="stats-item label-input-inline">
+                <div class="stats-item">
                     <h2>Billing Address</h2>
+                    <label class="error" for="b_address_postal_code" th:if="${#fields.hasErrors('billingAddress.postalCode')}" th:errors="*{billingAddress.postalCode}">Billing Postal Code Error</label><br th:if="${#fields.hasErrors('billingAddress.postalCode')}"/>
                     <label for="b_address_postal_code">Postal Code: </label><span><input id="b_address_postal_code" type="text" th:field="*{billingAddress.postalCode}" th:value="${orderForm.billingAddress.postalCode}"/></span><br/>
+                    <label class="error" for="b_address_province" th:if="${#fields.hasErrors('billingAddress.province')}" th:errors="*{billingAddress.province}">Billing Province Error</label><br th:if="${#fields.hasErrors('billingAddress.province')}"/>
                     <label for="b_address_province">Province: </label><span><input id="b_address_province" type="text" th:field="*{billingAddress.province}" th:value="${orderForm.billingAddress.province}"/></span><br/>
+                    <label class="error" for="b_address_town" th:if="${#fields.hasErrors('billingAddress.town')}" th:errors="*{billingAddress.town}">Billing Town Error</label><br th:if="${#fields.hasErrors('billingAddress.town')}"/>
                     <label for="b_address_town">City/Town: </label><span><input id="b_address_town" type="text" th:field="*{billingAddress.town}" th:value="${orderForm.billingAddress.town}"/></span><br/>
+                    <label class="error" for="b_address_street" th:if="${#fields.hasErrors('billingAddress.streetAddress')}" th:errors="*{billingAddress.streetAddress}">Billing Street Error</label><br th:if="${#fields.hasErrors('billingAddress.streetAddress')}"/>
                     <label for="b_address_street">Street Address: </label><span><input id="b_address_street" type="text" th:field="*{billingAddress.streetAddress}" th:value="${orderForm.billingAddress.streetAddress}"/></span><br/>
                     <label for="b_address_name">Address Name (optional): </label><span><input id="b_address_name" type="text" th:field="*{billingAddress.name}" th:value="${orderForm.billingAddress.name}"/></span><br/>
                     <label for="b_address_save">Save this Billing Address? </label><span><input id="b_address_save" type="checkbox" th:field="*{saveBilling}"/></span><br/>
                 </div>
-                <div class="stats-item label-input-inline">
+                <div class="stats-item">
                     <h2>Shipping Address</h2>
+                    <label class="error" for="s_address_postal_code" th:if="${#fields.hasErrors('shippingAddress.postalCode')}" th:errors="*{shippingAddress.postalCode}">Shipping Postal Code Error</label><br th:if="${#fields.hasErrors('shippingAddress.postalCode')}"/>
                     <label for="s_address_postal_code">Postal Code: </label><span><input id="s_address_postal_code" type="text" th:field="*{shippingAddress.postalCode}" th:value="${orderForm.shippingAddress.postalCode}"/></span><br/>
+                    <label class="error" for="s_address_province" th:if="${#fields.hasErrors('shippingAddress.province')}" th:errors="*{shippingAddress.province}">Shipping Province Error</label><br th:if="${#fields.hasErrors('shippingAddress.province')}"/>
                     <label for="s_address_province">Province: </label><span><input id="s_address_province" type="text" th:field="*{shippingAddress.province}" th:value="${orderForm.shippingAddress.province}"/></span><br/>
+                    <label class="error" for="s_address_town" th:if="${#fields.hasErrors('shippingAddress.town')}" th:errors="*{shippingAddress.town}">Shipping Town Error</label><br th:if="${#fields.hasErrors('shippingAddress.town')}"/>
                     <label for="s_address_town">City/Town: </label><span><input id="s_address_town" type="text" th:field="*{shippingAddress.town}" th:value="${orderForm.shippingAddress.town}"/></span><br/>
+                    <label class="error" for="s_address_street" th:if="${#fields.hasErrors('shippingAddress.streetAddress')}" th:errors="*{shippingAddress.streetAddress}">Shipping Street Error</label><br th:if="${#fields.hasErrors('shippingAddress.streetAddress')}"/>
                     <label for="s_address_street">Street Address: </label><span><input id="s_address_street" type="text" th:field="*{shippingAddress.streetAddress}" th:value="${orderForm.shippingAddress.streetAddress}"/></span><br/>
                     <label for="s_address_name">Address Name (optional): </label><span><input id="s_address_name" type="text" th:field="*{shippingAddress.name}" th:value="${orderForm.shippingAddress.name}"/></span><br/>
                     <label for="s_address_save">Save this Shipping Address? </label><span><input id="s_address_save" type="checkbox" th:field="*{saveShipping}"/></span><br/>
@@ -49,7 +57,7 @@
                     <h2><strong th:text="'Total: $' + ${#numbers.formatDecimal(orderForm.getTotal(), 0, 2)}" ></strong></h2>
                     <button type="submit" class="cart-button">Place Order</button>
                 </div>
-                <p class="stats-item error" th:if="${#fields.hasGlobalErrors()}" th:errors="*{global}">Global Error</p>
+                <p class="stats-item global-error" th:if="${#fields.hasGlobalErrors()}" th:errors="*{global}">Global Error</p>
             </form>
         </div>
     </div>

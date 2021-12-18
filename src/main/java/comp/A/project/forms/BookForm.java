@@ -14,8 +14,9 @@ public class BookForm {
     private String author;
     @NotEmpty(message = "Publisher name is required")
     private String publisherName;
+    @NotEmpty(message = "Publisher name is required")
     private String genre;
-    @Min(value = 0, message = "Number of pages cannot be negative")
+    @Min(value = 1, message = "Number of pages cannot be less than 1")
     private int pages;
     @DecimalMin(value = "0.0", message = "Books cannot be free", inclusive = false)
     private double price;

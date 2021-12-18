@@ -1,9 +1,8 @@
 package comp.A.project.controllers;
 
-import comp.A.project.DAO.AddressEntity;
 import comp.A.project.DAO.BookEntity;
 import comp.A.project.DAO.UserEntity;
-import comp.A.project.forms.AddressForm;
+import comp.A.project.forms.AddressUpdateForm;
 import comp.A.project.forms.UserForm;
 import comp.A.project.services.command.AddressCommandService;
 import comp.A.project.services.query.AddressQueryService;
@@ -71,8 +70,7 @@ public class UserController {
                 UserEntity user = getCurrentUser(principal);
                 model.addAttribute("user", user);
                 model.addAttribute("orders", user.getOrders());
-                model.addAttribute("billingAddressForm", new AddressForm(user.getBillingAddress()));
-                model.addAttribute("shippingAddressForm", new AddressForm(user.getShippingAddress()));
+                model.addAttribute("addressUpdateForm", new AddressUpdateForm(user));
             } catch (NotFoundException e) {
                 e.printStackTrace();
             }
@@ -100,8 +98,8 @@ public class UserController {
     }
 
     @PostMapping("/add_address")
-    public String addUserSavedAddress(@RequestParam(value = "type") String addressType, @Valid AddressForm addressForm, Model model, Principal principal) {
-        log.info("Request: save address " + addressForm.getName() + " as current user's saved " + addressType + " address");
+    public String addUserSavedAddress(@Valid AddressUpdateForm addressUpdateForm, BindingResult bindingResult, Model model, Principal principal) {
+        log.info("Request: save addresses");
 
         UserEntity user = null;
         // Is user authenticated?
@@ -112,12 +110,16 @@ public class UserController {
                 e.printStackTrace();
             }
         }
-        if (user != null) {
-            if (addressType.equals("billing"))
-                user.setBillingAddress(addressCommandService.create(addressForm));
-            else if (addressType.equals("shipping"))
-                user.setShippingAddress(addressCommandService.create(addressForm));
+        if (user != null && !bindingResult.hasErrors()) {
+            user.setBillingAddress(addressCommandService.create(addressUpdateForm.getBillingAddress()));
+            user.setShippingAddress(addressCommandService.create(addressUpdateForm.getShippingAddress()));
             userCommandService.saveUser(user);
+        }
+        else if (user != null && bindingResult.hasErrors()) {
+            model.addAttribute("user", user);
+            model.addAttribute("orders", user.getOrders());
+            model.addAttribute("addressUpdateForm", addressUpdateForm);
+            return "user_profile";
         }
 
         return "redirect:/user/profile";

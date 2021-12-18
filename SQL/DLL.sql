@@ -7,8 +7,7 @@ drop table if exists purchase cascade;
 drop table if exists book cascade;
 drop table if exists book_order cascade;
 drop view if exists book_order_totals;
-drop trigger if exists book_stock_low_after_order on book;
-drop trigger if exists book_initial_stockup on book;
+
 
 
 create table postal_region
@@ -108,39 +107,3 @@ create table purchase
 
 create view book_order_totals
 	as select o.order_no, b.isbn, b.author_name, "p".name, b.genre, b.price, bo.quantity, o.username, o.date, o.total from book b inner join publisher "p" on b.publisher_name = "p".name natural join book_order bo natural join "order" o;
-
-create or replace function init_purchase()
-    returns trigger
-    as $$
-	begin
-	   insert into purchase
-       values ((select ISBN from book where ISBN = NEW.ISBN), NOW(), (select stock_quantity from book where ISBN = NEW.ISBN), (select price from book where ISBN = NEW.ISBN)*(select stock_quantity from book where ISBN = NEW.ISBN)/2);
-	   return NEW;
-	end;
-    $$
-	language 'plpgsql';
-
-create or replace function restock()
-    returns trigger
-    as $$
-	begin
-       update book
-       set stock_quantity = stock_quantity + 10
-       where ISBN = NEW.ISBN;
-	   insert into purchase
-       values ((select ISBN from book where ISBN = NEW.ISBN), NOW(), 10, (select price from book where ISBN = NEW.ISBN)*5);
-	   return NEW;
-	end;
-    $$
-	language 'plpgsql';
-
-create trigger book_initial_stockup
-    after insert on book
-	for each row
-    execute procedure init_purchase();
-
-create trigger book_stock_low_after_order
-    after update on book
-	for each row
-    when (NEW.stock_quantity <= 2)
-    execute procedure restock();

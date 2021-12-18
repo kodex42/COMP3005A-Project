@@ -21,7 +21,7 @@ public class BookForm {
     @DecimalMin(value = "0.0", message = "Books cannot be free", inclusive = false)
     private double price;
     @DecimalMin(value = "0.0", message = "Publisher percentage must be positive", inclusive = false)
-    @DecimalMax(value = "0.2", message = "Publisher percentage cannot be higher than 20%", inclusive = false)
+    @DecimalMax(value = "0.2", message = "Publisher percentage cannot be higher than 20%")
     private double publisherPercentage;
     @Min(value = 0, message = "Amount in stock cannot be negative")
     private int stockQuantity;
